@@ -765,13 +765,19 @@
                             <span class="quiz-score">Score: <span id="currentScore">0</span>/<span id="maxScore">0</span></span>
                         </div>
                         <div class="progress">
-                            <div class="progress-bar quiz-progress-bar" role="progressbar" style="width: 20%"></div>
+                            <div id="quizProgressBar" class="progress-bar quiz-progress-bar" role="progressbar" style="width: 20%"></div>
                         </div>
                     </div>
                     
                     <div class="quiz-question-container">
                         <div id="quizContent">
-                            <!-- Quiz questions will be loaded here -->
+                            <div class="question-display">
+                                <h6 id="questionNumber">Question 1 of 5</h6>
+                                <p id="questionText" class="lead">Question text will appear here</p>
+                            </div>
+                            <div id="quizAnswers" class="answer-options">
+                                <!-- Answer options will be loaded here -->
+                            </div>
                         </div>
                     </div>
                     
@@ -779,11 +785,11 @@
                         <button class="btn btn-secondary" id="prevQuestionBtn" disabled>
                             <i class="fas fa-arrow-left me-2"></i>Previous
                         </button>
-                        <button class="btn btn-primary float-end" id="nextQuestionBtn">
+                        <button class="btn btn-primary float-end" id="nextQuestionBtn" style="display: none;">
                             Next<i class="fas fa-arrow-right ms-2"></i>
                         </button>
-                        <button class="btn btn-success float-end" id="finishQuizBtn" style="display: none;">
-                            <i class="fas fa-check me-2"></i>Finish Quiz
+                        <button class="btn btn-success float-end" id="submitQuizBtn" style="display: none;">
+                            <i class="fas fa-check me-2"></i>Submit Quiz
                         </button>
                     </div>
                 </div>
@@ -797,13 +803,17 @@
                         <h4 class="quiz-result-title">Quiz Complete!</h4>
                         <div class="quiz-result-score mb-3">
                             <div class="score-display">
-                                <span class="final-score">0</span>/<span class="final-total">0</span>
+                                <span id="quizScore">0/0</span>
                             </div>
-                            <div class="score-percentage">0%</div>
+                            <div id="quizPercentage" class="badge badge-primary">0%</div>
                         </div>
                         
                         <div class="quiz-result-message mb-3">
-                            <p class="result-message-text">Great job!</p>
+                            <p id="quizMessage">Great job!</p>
+                        </div>
+                        
+                        <div id="detailedResults" class="detailed-results mb-3">
+                            <!-- Detailed question results will appear here -->
                         </div>
                         
                         <div class="quiz-result-actions">
@@ -1198,9 +1208,10 @@
 
         startQuiz(tutorialId, lessonId) {
             const tutorial = tutorialData[tutorialId];
-            if (!tutorial || !tutorial.quiz) return;
+            const quiz = quizData[tutorialId];
+            if (!tutorial || !quiz) return;
 
-            this.currentQuiz = tutorial.quiz;
+            this.currentQuiz = quiz.questions;
             this.currentQuestionIndex = 0;
             this.userAnswers = [];
             this.score = 0;
