@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}Portfolio - GCSU MIS Starter Kit{% endblock %}
+
+{% block meta_description %}Showcase of our recent projects and technical expertise in web development, data analytics, and more.{% endblock %}
+
+{% block navbar_right %}
+<ul class="navbar-nav">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+            Filter Projects
+        </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="#" onclick="filterProjects('all')">All</a>
+            <a class="dropdown-item" href="#" onclick="filterProjects('web')">Web Development</a>
+            <a class="dropdown-item" href="#" onclick="filterProjects('analytics')">Data Analytics</a>
+            <a class="dropdown-item" href="#" onclick="filterProjects('mobile')">Mobile</a>
+        </div>
+    </li>
+</ul>
+{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Portfolio</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block page_header %}
+<div class="text-center mb-5">
+    <h1 class="display-4">
+        <i class="fas fa-briefcase me-3"></i>Our Portfolio
+    </h1>
+    <p class="lead">Showcasing our recent projects and technical expertise</p>
+    {% if projects %}
+        <p class="text-muted">{{ projects|length }} projects completed</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row" id="portfolio-grid">
+    {% for project in projects %}
+        {% set category_colors = {
+            'web': 'primary',
+            'analytics': 'success', 
+            'mobile': 'info',
+            'security': 'danger'
+        } %}
+        
+        <div class="col-md-6 col-lg-4 mb-4 project-item" data-category="{{ project.category }}">
+            <div class="card h-100 project-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title">{{ project.name }}</h5>
+                        <span class="badge badge-{{ category_colors[project.category] }}">
+                            {{ project.category|title }}
+                        </span>
+                    </div>
+                    
+                    <p class="card-text text-muted">
+                        <strong>Technologies:</strong> {{ project.tech }}
+                    </p>
+                    
+                    <div class="mt-auto">
+                        <a href="#" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye me-1"></i>View Details
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-external-link-alt me-1"></i>Live Demo
+                        </a>
+                    </div>
+                </div>
+                
+                {% if loop.index == 1 %}
+                    <div class="card-footer text-muted">
+                        <i class="fas fa-star text-warning"></i> Featured Project
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if loop.index % 3 == 0 and not loop.last %}
+            <div class="w-100 d-none d-lg-block"></div>
+        {% endif %}
+    {% else %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <h4><i class="fas fa-info-circle me-2"></i>No Projects Found</h4>
+                <p>We're currently working on exciting new projects. Check back soon!</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% if projects|length > 4 %}
+<div class="text-center mt-4">
+    <button class="btn btn-primary" onclick="loadMoreProjects()">
+        <i class="fas fa-plus me-2"></i>Load More Projects
+    </button>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block sidebar %}
+<div class="mt-5">
+    <h4>Project Statistics</h4>
+    <div class="card">
+        <div class="card-body">
+            {% set category_counts = projects|groupby('category')|list %}
+            {% for category, project_list in category_counts %}
+                <div class="d-flex justify-content-between">
+                    <span>{{ category|title }}</span>
+                    <strong>{{ project_list|length }}</strong>
+                </div>
+            {% endfor %}
+            <hr>
+            <div class="d-flex justify-content-between">
+                <span><strong>Total Projects</strong></span>
+                <strong>{{ projects|length }}</strong>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_styles %}
+<style>
+    .project-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid var(--cyborg-primary);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+        background: var(--cyborg-darker);
+    }
+    
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(42, 159, 215, 0.4);
+        border-color: var(--cyborg-secondary);
+    }
+    
+    .project-card .card-body {
+        color: var(--cyborg-light);
+    }
+    
+    .project-card .card-title {
+        color: var(--cyborg-primary);
+        text-shadow: var(--cyborg-glow);
+    }
+    
+    .project-card .card-footer {
+        background: rgba(42, 159, 215, 0.1);
+        border-top: 1px solid rgba(42, 159, 215, 0.3);
+        color: var(--cyborg-secondary);
+    }
+    
+    .project-card .fa-star {
+        filter: drop-shadow(0 0 5px currentColor);
+    }
+    
+    .project-item.hidden {
+        display: none !important;
+    }
+    
+    .badge {
+        font-size: 0.75em;
+    }
+    
+    .badge-primary {
+        background-color: var(--cyborg-primary);
+        color: var(--cyborg-dark);
+    }
+    
+    .badge-success {
+        background-color: var(--cyborg-secondary);
+        color: var(--cyborg-dark);
+    }
+    
+    .badge-info {
+        background-color: var(--cyborg-primary);
+        color: var(--cyborg-dark);
+    }
+    
+    .badge-danger {
+        background-color: var(--cyborg-danger);
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+    function filterProjects(category) {
+        const items = document.querySelectorAll('.project-item');
+        
+        items.forEach(item => {
+            if (category === 'all' || item.dataset.category === category) {
+                item.classList.remove('hidden');
+                item.style.animation = 'fadeIn 0.5s ease-in';
+            } else {
+                item.classList.add('hidden');
+            }
+        });
+        
+        // Update active dropdown item
+        document.querySelectorAll('.dropdown-item').forEach(link => {
+            link.classList.remove('active');
+        });
+        event.target.classList.add('active');
+    }
+    
+    function loadMoreProjects() {
+        // Simulate loading more projects
+        const grid = document.getElementById('portfolio-grid');
+        const newProject = `
+            <div class="col-md-6 col-lg-4 mb-4 project-item" data-category="web">
+                <div class="card h-100 project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">New Project</h5>
+                        <p class="card-text">Dynamically loaded project</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        grid.insertAdjacentHTML('beforeend', newProject);
+    }
+    
+    // Add fade-in animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+{% endblock %}

@@ -1,72 +1,196 @@
 {% extends "base.html" %}
 
+{% block title %}TechEdu Hub - Learn Technology Today{% endblock %}
+
+{% block meta_description %}Master the future of technology with our comprehensive learning platform. From beginner tutorials to advanced projects in Python, AI, and more.{% endblock %}
+
 {% block content %}
 
 <div class="text-center">
     <div class="card shadow-lg p-5 mb-5">
-        <h1 class="display-4 mb-3">
-            <i class="fas fa-graduation-cap me-3"></i>Georgia College & State University
+        <h1 class="display-3 mb-3">
+            <i class="fas fa-microchip me-3"></i>TechEdu Hub
         </h1>
-        <h2 class="h3 text-muted mb-4">MIS Flask Starter Kit</h2>
+        <h2 class="h3 text-muted mb-4">Empowering Tomorrow's Tech Leaders</h2>
         
-        <p class="lead mb-4">Welcome to GCSU's Flask development environment! This starter kit provides a foundation for building web applications using Python and Flask.</p>
+        <p class="lead mb-4">Master the technologies that shape our future. From coding fundamentals to cutting-edge AI, we make complex tech concepts accessible for everyone.</p>
         
         <div class="row justify-content-center mb-4">
             <div class="col-md-10">
-                <p class="mb-0">Georgia College & State University, located in Milledgeville, Georgia, is a public liberal arts university known for its commitment to undergraduate education and student success. Our MIS program prepares students with practical skills in software development, data analysis, and modern web technologies for business applications.</p>
+                <div class="mission-statement p-4 rounded">
+                    <h3 class="mb-3"><i class="fas fa-rocket me-2"></i>Our Mission</h3>
+                    <p class="mb-0">To democratize technology education by providing hands-on, practical learning experiences that bridge the gap between theoretical knowledge and real-world application. We believe everyone deserves access to high-quality tech education, regardless of their background or experience level.</p>
+                </div>
             </div>
         </div>
         
         <div class="row justify-content-center">
-            <div class="col-md-6 mb-3">
-                <div class="card h-100">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 feature-card">
                     <div class="card-body text-center">
-                        <i class="fas fa-code fa-3x mb-3" style="color: var(--gcsu-blue);"></i>
-                        <h5 class="card-title">Modern Development</h5>
-                        <p class="card-text">Built with Flask, Bootstrap, and modern web technologies for responsive design.</p>
+                        <i class="fas fa-play-circle fa-4x mb-3 text-success"></i>
+                        <h5 class="card-title">Start Simple</h5>
+                        <p class="card-text">Begin with beginner-friendly tutorials in Python, HTML, JavaScript, and more. No prior experience needed!</p>
+                        <div class="mt-3">
+                            <span class="badge badge-success">Beginner Friendly</span>
+                            <span class="badge badge-info">Step-by-Step</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <div class="card h-100">
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 feature-card">
                     <div class="card-body text-center">
-                        <i class="fas fa-database fa-3x mb-3" style="color: var(--gcsu-green);"></i>
-                        <h5 class="card-title">Database Ready</h5>
-                        <p class="card-text">Pre-configured for MySQL/PostgreSQL with example CRUD operations.</p>
+                        <i class="fas fa-tools fa-4x mb-3 text-warning"></i>
+                        <h5 class="card-title">Build Projects</h5>
+                        <p class="card-text">Apply your knowledge through hands-on intermediate projects that solve real-world problems.</p>
+                        <div class="mt-3">
+                            <span class="badge badge-warning">Practical</span>
+                            <span class="badge badge-primary">Portfolio Ready</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 feature-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-line fa-4x mb-3 text-info"></i>
+                        <h5 class="card-title">Stay Current</h5>
+                        <p class="card-text">Keep up with the latest in AI, robotics, cybersecurity, and emerging technologies.</p>
+                        <div class="mt-3">
+                            <span class="badge badge-info">Trending</span>
+                            <span class="badge badge-danger">AI & Robotics</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="mt-4">
-            <a href="{{ url_for('examples.show_examples') }}" class="btn btn-primary btn-lg me-3">
-                <i class="fas fa-eye me-2"></i>View Examples
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="learning-path-preview p-4">
+                    <h4><i class="fas fa-map me-2"></i>Your Learning Journey</h4>
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <div class="learning-step">
+                            <div class="step-circle">1</div>
+                            <small>Tutorials</small>
+                        </div>
+                        <i class="fas fa-arrow-right text-muted"></i>
+                        <div class="learning-step">
+                            <div class="step-circle">2</div>
+                            <small>Projects</small>
+                        </div>
+                        <i class="fas fa-arrow-right text-muted"></i>
+                        <div class="learning-step">
+                            <div class="step-circle">3</div>
+                            <small>Advanced</small>
+                        </div>
+                        <i class="fas fa-arrow-right text-muted"></i>
+                        <div class="learning-step">
+                            <div class="step-circle">4</div>
+                            <small>Expert</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-5">
+            <a href="{{ url_for('tutorials') }}" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-graduation-cap me-2"></i>Start Learning
             </a>
-            <a href="{{ url_for('about') }}" class="btn btn-outline-secondary btn-lg">
-                <i class="fas fa-info-circle me-2"></i>Learn More
+            <a href="{{ url_for('projects') }}" class="btn btn-outline-secondary btn-lg me-3">
+                <i class="fas fa-project-diagram me-2"></i>View Projects
+            </a>
+            <a href="{{ url_for('resources') }}" class="btn btn-success btn-lg">
+                <i class="fas fa-download me-2"></i>Get Resources
             </a>
         </div>
     </div>
 </div>
 
+{% block page_styles %}
 <style>
-    .card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
+    .feature-card {
+        background: var(--cyborg-darker);
+        border: 1px solid var(--cyborg-primary);
+        transition: all 0.3s ease;
     }
     
-    .btn-outline-secondary {
-        border-color: var(--gcsu-blue);
-        color: var(--gcsu-blue);
+    .feature-card:hover {
+        border-color: var(--cyborg-secondary);
+        box-shadow: 0 15px 40px rgba(42, 159, 215, 0.3);
+        transform: translateY(-10px);
     }
     
-    .btn-outline-secondary:hover {
-        background-color: var(--gcsu-blue);
-        border-color: var(--gcsu-blue);
-        color: white;
+    .feature-card .fas {
+        filter: drop-shadow(0 0 15px currentColor);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover .fas {
+        transform: scale(1.1);
+    }
+    
+    .mission-statement {
+        background: rgba(42, 159, 215, 0.1);
+        border: 1px solid var(--cyborg-primary);
+    }
+    
+    .learning-path-preview {
+        background: var(--cyborg-darker);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+        border-radius: 10px;
+    }
+    
+    .learning-step {
+        text-align: center;
+        margin: 0 10px;
+    }
+    
+    .step-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--cyborg-primary);
+        color: var(--cyborg-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin: 0 auto 8px;
+        box-shadow: 0 0 15px rgba(42, 159, 215, 0.5);
+    }
+    
+    .badge {
+        margin: 2px;
+        font-size: 0.75em;
+    }
+    
+    .btn-success {
+        background: linear-gradient(45deg, var(--cyborg-secondary), #28a745);
+        border-color: var(--cyborg-secondary);
+    }
+    
+    .btn-success:hover {
+        background: linear-gradient(45deg, #28a745, var(--cyborg-secondary));
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 51, 153, 0.3);
+        box-shadow: 0 6px 20px rgba(119, 179, 0, 0.4);
+    }
+    
+    @media (max-width: 768px) {
+        .learning-step {
+            margin: 10px 5px;
+        }
+        
+        .d-flex .fas.fa-arrow-right {
+            display: none !important;
+        }
     }
 </style>
+{% endblock %}
 
 {% endblock %}

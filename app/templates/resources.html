@@ -1,0 +1,667 @@
+{% extends "base.html" %}
+
+{% block title %}Resources & Downloads - TechEdu Hub{% endblock %}
+
+{% block meta_description %}Download free programming cheat sheets, coding resources, and access curated links to the best technology learning materials and tools.{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Resources</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block page_header %}
+<div class="text-center mb-5">
+    <h1 class="display-4">
+        <i class="fas fa-download me-3"></i>Resources & Downloads
+    </h1>
+    <p class="lead">Free cheat sheets, helpful links, and essential tools for your coding journey</p>
+    <div class="resources-stats d-flex justify-content-center gap-4 mt-4">
+        <div class="stat-item">
+            <div class="stat-number">{{ resources.cheatsheets|length }}</div>
+            <div class="stat-label">Cheat Sheets</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">{{ resources.links|length }}+</div>
+            <div class="stat-label">Helpful Links</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">Free</div>
+            <div class="stat-label">Always</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Downloadable Resources -->
+    <div class="col-lg-8 mb-4">
+        <div class="section-header mb-4">
+            <h2><i class="fas fa-file-download me-3"></i>Downloadable Cheat Sheets</h2>
+            <p class="text-muted">Quick reference guides you can download and use offline</p>
+        </div>
+        
+        <div class="row">
+            {% for sheet in resources.cheatsheets %}
+            <div class="col-md-6 mb-4">
+                <div class="card resource-card">
+                    <div class="card-header resource-header">
+                        <div class="resource-icon">
+                            {% if 'Python' in sheet.name %}
+                                <i class="fab fa-python fa-3x"></i>
+                            {% elif 'HTML' in sheet.name %}
+                                <i class="fab fa-html5 fa-3x"></i>
+                            {% elif 'JavaScript' in sheet.name %}
+                                <i class="fab fa-js-square fa-3x"></i>
+                            {% else %}
+                                <i class="fas fa-file-code fa-3x"></i>
+                            {% endif %}
+                        </div>
+                        <div class="resource-type">
+                            <span class="badge badge-primary">PDF</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ sheet.name }}</h5>
+                        <p class="card-text text-muted">{{ sheet.description }}</p>
+                        
+                        <div class="resource-details mb-3">
+                            <div class="detail-item">
+                                <i class="fas fa-file-alt me-2"></i>
+                                <span>PDF Format</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-download me-2"></i>
+                                <span>{{ (loop.index * 1234) + 567 }} downloads</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-star me-2"></i>
+                                <span>4.{{ (loop.index + 6) }}/5</span>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-preview mb-3">
+                            <h6>What's Included:</h6>
+                            <ul class="preview-list">
+                                {% if 'Python' in sheet.name %}
+                                    <li>Basic syntax and data types</li>
+                                    <li>Functions and control structures</li>
+                                    <li>Common built-in functions</li>
+                                    <li>Error handling examples</li>
+                                {% elif 'HTML' in sheet.name %}
+                                    <li>Essential HTML tags</li>
+                                    <li>CSS selectors and properties</li>
+                                    <li>Flexbox and Grid layouts</li>
+                                    <li>Responsive design tips</li>
+                                {% elif 'JavaScript' in sheet.name %}
+                                    <li>ES6+ syntax features</li>
+                                    <li>DOM manipulation methods</li>
+                                    <li>Async/await patterns</li>
+                                    <li>Common array methods</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        
+                        <div class="resource-actions">
+                            <a href="#" class="btn btn-success download-btn" data-file="{{ sheet.file }}">
+                                <i class="fas fa-download me-2"></i>Download
+                            </a>
+                            <a href="#" class="btn btn-outline-primary preview-btn">
+                                <i class="fas fa-eye me-2"></i>Preview
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            <i class="fas fa-calendar me-1"></i>Updated: January 2024
+                            <i class="fas fa-file-pdf ms-3 me-1"></i>{{ (loop.index * 2) + 3 }} pages
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Helpful Links Section -->
+        <div class="section-header mt-5 mb-4">
+            <h2><i class="fas fa-external-link-alt me-3"></i>Essential Learning Resources</h2>
+            <p class="text-muted">Curated links to the best learning platforms and documentation</p>
+        </div>
+        
+        <div class="helpful-links">
+            {% for link in resources.links %}
+            <div class="card link-card mb-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="link-info">
+                            <div class="link-header d-flex align-items-center">
+                                <div class="link-favicon me-3">
+                                    {% if 'python' in link.url %}
+                                        <i class="fab fa-python fa-2x text-warning"></i>
+                                    {% elif 'mozilla' in link.url %}
+                                        <i class="fab fa-firefox fa-2x text-danger"></i>
+                                    {% elif 'stackoverflow' in link.url %}
+                                        <i class="fab fa-stack-overflow fa-2x text-warning"></i>
+                                    {% else %}
+                                        <i class="fas fa-globe fa-2x text-info"></i>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <h5 class="mb-1">{{ link.name }}</h5>
+                                    <p class="text-muted mb-0">{{ link.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="link-actions">
+                            <a href="{{ link.url }}" target="_blank" class="btn btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-2"></i>Visit Site
+                            </a>
+                            <button class="btn btn-outline-secondary bookmark-btn" data-url="{{ link.url }}">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="link-tags mt-3">
+                        {% if 'python' in link.url %}
+                            <span class="tag-badge">Python</span>
+                            <span class="tag-badge">Documentation</span>
+                            <span class="tag-badge">Official</span>
+                        {% elif 'mozilla' in link.url %}
+                            <span class="tag-badge">Web Development</span>
+                            <span class="tag-badge">HTML</span>
+                            <span class="tag-badge">CSS</span>
+                            <span class="tag-badge">JavaScript</span>
+                        {% elif 'stackoverflow' in link.url %}
+                            <span class="tag-badge">Community</span>
+                            <span class="tag-badge">Q&A</span>
+                            <span class="tag-badge">Problem Solving</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <div class="sidebar-content">
+            <!-- Quick Access Tools -->
+            <div class="card tools-card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-tools me-2"></i>Essential Tools
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <div class="tool-info">
+                                <strong>GitHub</strong>
+                                <small class="d-block text-muted">Version control & collaboration</small>
+                            </div>
+                            <a href="https://github.com" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="tool-info">
+                                <strong>VS Code</strong>
+                                <small class="d-block text-muted">Code editor</small>
+                            </div>
+                            <a href="https://code.visualstudio.com" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <i class="fab fa-python"></i>
+                            </div>
+                            <div class="tool-info">
+                                <strong>Python.org</strong>
+                                <small class="d-block text-muted">Python downloads</small>
+                            </div>
+                            <a href="https://python.org" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="tool-item">
+                            <div class="tool-icon">
+                                <i class="fab fa-node-js"></i>
+                            </div>
+                            <div class="tool-info">
+                                <strong>Node.js</strong>
+                                <small class="d-block text-muted">JavaScript runtime</small>
+                            </div>
+                            <a href="https://nodejs.org" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Download Stats -->
+            <div class="card stats-card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>Download Stats
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="stat-row">
+                        <span>Today</span>
+                        <strong>127 downloads</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span>This Week</span>
+                        <strong>892 downloads</strong>
+                    </div>
+                    <div class="stat-row">
+                        <span>Total</span>
+                        <strong>15,234 downloads</strong>
+                    </div>
+                    <hr>
+                    <div class="popular-resource">
+                        <small class="text-muted">Most Popular:</small>
+                        <strong class="d-block">Python Cheat Sheet</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Feedback -->
+            <div class="card feedback-card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-comment me-2"></i>Feedback
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Help us improve our resources!</p>
+                    <form class="feedback-form">
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="3" placeholder="Share your feedback or suggest new resources..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-paper-plane me-2"></i>Send Feedback
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_styles %}
+<style>
+    .resources-stats .stat-item {
+        text-align: center;
+        padding: 0 20px;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--cyborg-primary);
+        text-shadow: var(--cyborg-glow);
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        color: var(--cyborg-light);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .section-header {
+        border-bottom: 2px solid rgba(42, 159, 215, 0.3);
+        padding-bottom: 15px;
+    }
+    
+    .resource-card {
+        background: var(--cyborg-darker);
+        border: 1px solid var(--cyborg-primary);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    
+    .resource-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 40px rgba(42, 159, 215, 0.3);
+        border-color: var(--cyborg-secondary);
+    }
+    
+    .resource-header {
+        background: linear-gradient(135deg, rgba(42, 159, 215, 0.2), rgba(119, 179, 0, 0.1));
+        padding: 20px;
+        text-align: center;
+        position: relative;
+    }
+    
+    .resource-icon {
+        color: var(--cyborg-primary);
+        filter: drop-shadow(0 0 10px currentColor);
+    }
+    
+    .resource-type {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .detail-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        color: var(--cyborg-light);
+        font-size: 0.9rem;
+    }
+    
+    .preview-list {
+        list-style: none;
+        padding-left: 0;
+    }
+    
+    .preview-list li {
+        padding: 3px 0;
+        color: var(--cyborg-light);
+        font-size: 0.9rem;
+    }
+    
+    .preview-list li::before {
+        content: "✓";
+        color: var(--cyborg-secondary);
+        font-weight: bold;
+        margin-right: 8px;
+    }
+    
+    .download-btn {
+        background: linear-gradient(45deg, var(--cyborg-secondary), #28a745);
+        border-color: var(--cyborg-secondary);
+        transition: all 0.3s ease;
+    }
+    
+    .download-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(119, 179, 0, 0.4);
+    }
+    
+    .link-card {
+        background: var(--cyborg-darker);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .link-card:hover {
+        border-color: var(--cyborg-primary);
+        box-shadow: 0 5px 15px rgba(42, 159, 215, 0.2);
+    }
+    
+    .link-favicon {
+        width: 50px;
+        text-align: center;
+    }
+    
+    .tag-badge {
+        background: rgba(42, 159, 215, 0.2);
+        border: 1px solid var(--cyborg-primary);
+        color: var(--cyborg-light);
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+    }
+    
+    .sidebar-content .card {
+        background: var(--cyborg-darker);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+    }
+    
+    .tool-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(42, 159, 215, 0.1);
+    }
+    
+    .tool-item:last-child {
+        border-bottom: none;
+    }
+    
+    .tool-icon {
+        width: 40px;
+        text-align: center;
+        font-size: 1.5rem;
+        color: var(--cyborg-primary);
+        margin-right: 15px;
+    }
+    
+    .tool-info {
+        flex-grow: 1;
+    }
+    
+    .stat-row {
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(42, 159, 215, 0.1);
+    }
+    
+    .stat-row:last-child {
+        border-bottom: none;
+    }
+    
+    .stat-row span {
+        color: var(--cyborg-light);
+    }
+    
+    .stat-row strong {
+        color: var(--cyborg-primary);
+        margin-left: auto;
+    }
+    
+    .feedback-form .form-control {
+        background: var(--cyborg-dark);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+        color: var(--cyborg-light);
+    }
+    
+    .feedback-form .form-control:focus {
+        background: var(--cyborg-dark);
+        border-color: var(--cyborg-primary);
+        box-shadow: 0 0 0 0.2rem rgba(42, 159, 215, 0.25);
+        color: var(--cyborg-light);
+    }
+    
+    .card-header {
+        background: rgba(42, 159, 215, 0.1);
+        border-bottom: 1px solid rgba(42, 159, 215, 0.3);
+    }
+    
+    @media (max-width: 768px) {
+        .link-header {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .link-actions {
+            margin-top: 15px;
+        }
+        
+        .resources-stats {
+            flex-direction: column;
+            gap: 15px !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Download functionality
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const fileName = this.getAttribute('data-file');
+                const originalText = this.innerHTML;
+                
+                // Simulate download
+                this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Preparing...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-check me-2"></i>Downloaded!';
+                    this.classList.remove('btn-success');
+                    this.classList.add('btn-success');
+                    
+                    // Show notification
+                    showNotification(`${fileName} downloaded successfully!`, 'success');
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.disabled = false;
+                        this.classList.remove('btn-success');
+                        this.classList.add('btn-success');
+                    }, 2000);
+                }, 1500);
+            });
+        });
+        
+        // Bookmark functionality
+        document.querySelectorAll('.bookmark-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                const icon = this.querySelector('i');
+                
+                if (icon.classList.contains('fas')) {
+                    icon.classList.remove('fas', 'fa-bookmark');
+                    icon.classList.add('fas', 'fa-bookmark');
+                    this.classList.remove('btn-outline-secondary');
+                    this.classList.add('btn-warning');
+                    showNotification('Bookmarked!', 'success');
+                } else {
+                    icon.classList.remove('fas', 'fa-bookmark');
+                    icon.classList.add('fas', 'fa-bookmark');
+                    this.classList.remove('btn-warning');
+                    this.classList.add('btn-outline-secondary');
+                    showNotification('Bookmark removed', 'info');
+                }
+            });
+        });
+        
+        // Preview functionality
+        document.querySelectorAll('.preview-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showNotification('Preview feature coming soon!', 'info');
+            });
+        });
+        
+        // Feedback form
+        document.querySelector('.feedback-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const textarea = this.querySelector('textarea');
+            const button = this.querySelector('button[type="submit"]');
+            const originalText = button.innerHTML;
+            
+            if (!textarea.value.trim()) {
+                showNotification('Please enter your feedback', 'warning');
+                return;
+            }
+            
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-check me-2"></i>Sent!';
+                showNotification('Thank you for your feedback!', 'success');
+                textarea.value = '';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }, 2000);
+            }, 1500);
+        });
+        
+        // Animate download stats
+        animateStats();
+    });
+    
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type} notification-popup`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+            ${message}
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            min-width: 300px;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+    
+    function animateStats() {
+        const statNumbers = document.querySelectorAll('.stat-row strong');
+        statNumbers.forEach(stat => {
+            const text = stat.textContent;
+            if (text.includes('downloads')) {
+                const number = parseInt(text.replace(/\D/g, ''));
+                animateNumber(stat, number, text.includes('downloads') ? ' downloads' : '');
+            }
+        });
+    }
+    
+    function animateNumber(element, target, suffix = '') {
+        let current = 0;
+        const increment = target / 50;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current).toLocaleString() + suffix;
+        }, 30);
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,964 @@
+{% extends "base.html" %}
+
+{% block title %}Intermediate Projects - TechEdu Hub{% endblock %}
+
+{% block meta_description %}Take your skills to the next level with hands-on intermediate coding projects. Build real applications and strengthen your portfolio.{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Intermediate Projects</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block page_header %}
+<div class="text-center mb-5">
+    <h1 class="display-4">
+        <i class="fas fa-project-diagram me-3"></i>Intermediate Projects
+    </h1>
+    <p class="lead">Build real-world applications and strengthen your development portfolio</p>
+    <div class="project-stats d-flex justify-content-center gap-4 mt-4">
+        <div class="stat-item">
+            <div class="stat-number">{{ projects|length }}</div>
+            <div class="stat-label">Projects</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">{{ projects|length * 3 }}+</div>
+            <div class="stat-label">Skills Covered</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">Portfolio</div>
+            <div class="stat-label">Ready</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="project-filters text-center">
+            <button class="btn btn-outline-primary active" data-filter="all">
+                <i class="fas fa-th me-2"></i>All Projects
+            </button>
+            <button class="btn btn-outline-primary" data-filter="python">
+                <i class="fab fa-python me-2"></i>Python
+            </button>
+            <button class="btn btn-outline-primary" data-filter="web">
+                <i class="fas fa-code me-2"></i>Web Dev
+            </button>
+            <button class="btn btn-outline-primary" data-filter="data">
+                <i class="fas fa-chart-bar me-2"></i>Data Science
+            </button>
+            <button class="btn btn-outline-primary" data-filter="ai">
+                <i class="fas fa-robot me-2"></i>AI/ML
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row projects-grid">
+    {% for project in projects %}
+    {% set tech_categories = {
+        'Python, API': 'python',
+        'HTML, CSS, JS': 'web', 
+        'Python, Matplotlib': 'data',
+        'Python, NLP': 'ai'
+    } %}
+    
+    <div class="col-lg-6 col-xl-4 mb-4 project-item" data-category="{{ tech_categories.get(project.tech, 'python') }}">
+        <div class="card project-card h-100">
+            <div class="project-header">
+                <div class="project-icon">
+                    {% if 'API' in project.tech %}
+                        <i class="fas fa-cloud fa-2x"></i>
+                    {% elif 'JS' in project.tech %}
+                        <i class="fab fa-js-square fa-2x"></i>
+                    {% elif 'Matplotlib' in project.tech %}
+                        <i class="fas fa-chart-line fa-2x"></i>
+                    {% elif 'NLP' in project.tech %}
+                        <i class="fas fa-comments fa-2x"></i>
+                    {% else %}
+                        <i class="fas fa-code fa-2x"></i>
+                    {% endif %}
+                </div>
+                <div class="difficulty-indicator">
+                    <span class="badge badge-warning">{{ project.difficulty.title() }}</span>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <h4 class="card-title">{{ project.title }}</h4>
+                <p class="card-text text-muted mb-3">{{ project.description }}</p>
+                
+                <div class="project-tech mb-3">
+                    <h6 class="tech-label">
+                        <i class="fas fa-tools me-2"></i>Technologies:
+                    </h6>
+                    <div class="tech-tags">
+                        {% for tech in project.tech.split(', ') %}
+                            <span class="badge badge-tech">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="project-features mb-3">
+                    <h6><i class="fas fa-star me-2"></i>Key Features:</h6>
+                    <ul class="feature-list">
+                        {% if 'Weather' in project.title %}
+                            <li>Real-time weather data fetching</li>
+                            <li>Location-based forecasts</li>
+                            <li>Interactive user interface</li>
+                        {% elif 'Task' in project.title %}
+                            <li>Add, edit, and delete tasks</li>
+                            <li>Local storage persistence</li>
+                            <li>Priority and category filtering</li>
+                        {% elif 'Data' in project.title %}
+                            <li>CSV data processing</li>
+                            <li>Multiple chart types</li>
+                            <li>Interactive visualizations</li>
+                        {% elif 'Chatbot' in project.title %}
+                            <li>Natural language processing</li>
+                            <li>Context-aware responses</li>
+                            <li>Extensible conversation flows</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div class="project-learning mb-3">
+                    <h6><i class="fas fa-graduation-cap me-2"></i>What You'll Learn:</h6>
+                    <div class="learning-outcomes">
+                        {% if 'API' in project.tech %}
+                            <span class="outcome-tag">API Integration</span>
+                            <span class="outcome-tag">JSON Handling</span>
+                            <span class="outcome-tag">Error Handling</span>
+                        {% elif 'JS' in project.tech %}
+                            <span class="outcome-tag">DOM Manipulation</span>
+                            <span class="outcome-tag">Event Handling</span>
+                            <span class="outcome-tag">Local Storage</span>
+                        {% elif 'Matplotlib' in project.tech %}
+                            <span class="outcome-tag">Data Analysis</span>
+                            <span class="outcome-tag">Visualization</span>
+                            <span class="outcome-tag">Statistical Insights</span>
+                        {% elif 'NLP' in project.tech %}
+                            <span class="outcome-tag">Text Processing</span>
+                            <span class="outcome-tag">Machine Learning</span>
+                            <span class="outcome-tag">AI Integration</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="project-stats mb-3">
+                    <div class="d-flex justify-content-between text-muted">
+                        <small><i class="fas fa-clock me-1"></i>Est. {{ (project.id + 2) * 2 }} hours</small>
+                        <small><i class="fas fa-signal me-1"></i>Intermediate</small>
+                        <small><i class="fas fa-users me-1"></i>{{ (project.id * 789) + 234 }} completed</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="project-actions d-flex gap-2">
+                    <a href="#" class="btn btn-primary flex-fill">
+                        <i class="fas fa-play me-2"></i>Start Project
+                    </a>
+                    <a href="#" class="btn btn-outline-secondary">
+                        <i class="fas fa-eye me-2"></i>Preview
+                    </a>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% if project.starter_code %}
+                                {% for file_type, code in project.starter_code.items() %}
+                                <li><a class="dropdown-item" href="{{ url_for('download_starter_code', project_id=project.id, file_type=file_type) }}">
+                                    <i class="fas fa-{% if file_type == 'python' %}python{% elif file_type == 'html' %}code{% elif file_type == 'css' %}palette{% elif file_type == 'javascript' %}js-square{% else %}file{% endif %} me-2"></i>
+                                    {{ file_type.title() }} Code
+                                </a></li>
+                                {% endfor %}
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ project.github_repo }}" target="_blank">
+                                <i class="fab fa-github me-2"></i>View on GitHub
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="project-progress mt-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <small class="text-muted">Your Progress</small>
+                        <small class="progress-text">0%</small>
+                    </div>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Community Showcase Section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="community-showcase">
+            <div class="text-center mb-4">
+                <h3><i class="fas fa-users me-2"></i>Community Showcase</h3>
+                <p class="lead">See what fellow learners have built and share your own projects!</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="featured-projects">
+                        <h5><i class="fas fa-star me-2"></i>Featured Community Projects</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="community-project-card">
+                                    <div class="project-image">
+                                        <img src="https://via.placeholder.com/300x200/2a9fd7/ffffff?text=Weather+App" alt="Weather App" class="img-fluid rounded">
+                                        <div class="project-badge">
+                                            <span class="badge badge-success">Featured</span>
+                                        </div>
+                                    </div>
+                                    <div class="project-content">
+                                        <div class="project-header">
+                                            <img src="https://api.dicebear.com/7.x/avatars/svg?seed=emma" alt="User" class="creator-avatar">
+                                            <div class="creator-info">
+                                                <strong class="creator-name">Emma_Python</strong>
+                                                <small class="text-muted">2 days ago</small>
+                                            </div>
+                                        </div>
+                                        <h6 class="project-title">Advanced Weather Dashboard</h6>
+                                        <p class="project-description">Real-time weather app with interactive charts and 7-day forecasts. Built with Python Flask and Chart.js.</p>
+                                        <div class="project-stats">
+                                            <small><i class="fas fa-star me-1"></i>24 likes</small>
+                                            <small><i class="fas fa-eye me-1"></i>156 views</small>
+                                            <small><i class="fas fa-code-branch me-1"></i>8 forks</small>
+                                        </div>
+                                        <div class="project-tags mt-2">
+                                            <span class="badge badge-tech">Python</span>
+                                            <span class="badge badge-tech">Flask</span>
+                                            <span class="badge badge-tech">API</span>
+                                        </div>
+                                    </div>
+                                    <div class="project-actions">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewProject('weather-dashboard')">
+                                            <i class="fas fa-eye me-1"></i>View
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" onclick="likeProject('weather-dashboard')">
+                                            <i class="fas fa-heart me-1"></i>Like
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-info" onclick="forkProject('weather-dashboard')">
+                                            <i class="fas fa-code-branch me-1"></i>Fork
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="community-project-card">
+                                    <div class="project-image">
+                                        <img src="https://via.placeholder.com/300x200/77b300/ffffff?text=Task+Manager" alt="Task Manager" class="img-fluid rounded">
+                                        <div class="project-badge">
+                                            <span class="badge badge-info">Trending</span>
+                                        </div>
+                                    </div>
+                                    <div class="project-content">
+                                        <div class="project-header">
+                                            <img src="https://api.dicebear.com/7.x/avatars/svg?seed=jason" alt="User" class="creator-avatar">
+                                            <div class="creator-info">
+                                                <strong class="creator-name">Jason_JS</strong>
+                                                <small class="text-muted">5 days ago</small>
+                                            </div>
+                                        </div>
+                                        <h6 class="project-title">Collaborative Task Manager</h6>
+                                        <p class="project-description">Team-based task management with real-time updates and drag-and-drop functionality.</p>
+                                        <div class="project-stats">
+                                            <small><i class="fas fa-star me-1"></i>31 likes</small>
+                                            <small><i class="fas fa-eye me-1"></i>203 views</small>
+                                            <small><i class="fas fa-code-branch me-1"></i>12 forks</small>
+                                        </div>
+                                        <div class="project-tags mt-2">
+                                            <span class="badge badge-tech">React</span>
+                                            <span class="badge badge-tech">Node.js</span>
+                                            <span class="badge badge-tech">WebSocket</span>
+                                        </div>
+                                    </div>
+                                    <div class="project-actions">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewProject('task-manager')">
+                                            <i class="fas fa-eye me-1"></i>View
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" onclick="likeProject('task-manager')">
+                                            <i class="fas fa-heart me-1"></i>Like
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-info" onclick="forkProject('task-manager')">
+                                            <i class="fas fa-code-branch me-1"></i>Fork
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="community-sidebar">
+                        <div class="card mb-4">
+                            <div class="card-body text-center">
+                                <h6><i class="fas fa-upload me-2"></i>Share Your Project</h6>
+                                <p class="small text-muted mb-3">Show off what you've built and get feedback from the community!</p>
+                                <button class="btn btn-primary btn-sm w-100" onclick="shareProject()">
+                                    <i class="fas fa-plus me-1"></i>Upload Project
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h6><i class="fas fa-trophy me-2"></i>Top Contributors</h6>
+                                <div class="contributor-list">
+                                    <div class="contributor-item">
+                                        <img src="https://api.dicebear.com/7.x/avatars/svg?seed=top1" alt="User" class="contributor-avatar">
+                                        <div class="contributor-info">
+                                            <strong class="contributor-name">CodeMaster_99</strong>
+                                            <small class="text-muted">15 projects</small>
+                                        </div>
+                                        <div class="contributor-badge">
+                                            <span class="badge badge-warning">🥇</span>
+                                        </div>
+                                    </div>
+                                    <div class="contributor-item">
+                                        <img src="https://api.dicebear.com/7.x/avatars/svg?seed=top2" alt="User" class="contributor-avatar">
+                                        <div class="contributor-info">
+                                            <strong class="contributor-name">DevGuru_42</strong>
+                                            <small class="text-muted">12 projects</small>
+                                        </div>
+                                        <div class="contributor-badge">
+                                            <span class="badge badge-secondary">🥈</span>
+                                        </div>
+                                    </div>
+                                    <div class="contributor-item">
+                                        <img src="https://api.dicebear.com/7.x/avatars/svg?seed=top3" alt="User" class="contributor-avatar">
+                                        <div class="contributor-info">
+                                            <strong class="contributor-name">WebWiz_21</strong>
+                                            <small class="text-muted">9 projects</small>
+                                        </div>
+                                        <div class="contributor-badge">
+                                            <span class="badge badge-warning">🥉</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <h6><i class="fas fa-chart-bar me-2"></i>Community Stats</h6>
+                                <div class="stats-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-number">127</div>
+                                        <div class="stat-label">Projects</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">1.8k</div>
+                                        <div class="stat-label">Views</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">342</div>
+                                        <div class="stat-label">Likes</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">89</div>
+                                        <div class="stat-label">Forks</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="next-steps-section text-center">
+            <h3>Ready for Advanced Challenges?</h3>
+            <p class="lead">Master these projects and you'll be ready for professional development!</p>
+            <div class="next-steps-actions">
+                <a href="{{ url_for('resources') }}" class="btn btn-success btn-lg me-3">
+                    <i class="fas fa-download me-2"></i>Get Advanced Resources
+                </a>
+                <a href="{{ url_for('news') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-newspaper me-2"></i>Read Tech Trends
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_styles %}
+<style>
+    .project-stats .stat-item {
+        text-align: center;
+        padding: 0 20px;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--cyborg-primary);
+        text-shadow: var(--cyborg-glow);
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        color: var(--cyborg-light);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .project-filters .btn {
+        margin: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .project-filters .btn.active {
+        background: var(--cyborg-primary);
+        border-color: var(--cyborg-primary);
+        color: var(--cyborg-dark);
+        box-shadow: var(--cyborg-glow);
+    }
+    
+    .project-card {
+        background: var(--cyborg-darker);
+        border: 1px solid var(--cyborg-primary);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    
+    .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(42, 159, 215, 0.3);
+        border-color: var(--cyborg-secondary);
+    }
+    
+    .project-header {
+        background: linear-gradient(135deg, rgba(42, 159, 215, 0.2), rgba(119, 179, 0, 0.1));
+        padding: 20px;
+        text-align: center;
+        position: relative;
+    }
+    
+    .project-icon {
+        color: var(--cyborg-primary);
+        filter: drop-shadow(0 0 15px currentColor);
+    }
+    
+    .difficulty-indicator {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    
+    .tech-tags .badge-tech,
+    .outcome-tag {
+        background: rgba(42, 159, 215, 0.2);
+        border: 1px solid var(--cyborg-primary);
+        color: var(--cyborg-light);
+        margin: 2px;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+    }
+    
+    .feature-list {
+        list-style: none;
+        padding-left: 0;
+    }
+    
+    .feature-list li {
+        padding: 3px 0;
+        color: var(--cyborg-light);
+    }
+    
+    .feature-list li::before {
+        content: "✓";
+        color: var(--cyborg-secondary);
+        font-weight: bold;
+        margin-right: 8px;
+    }
+    
+    .learning-outcomes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .progress-sm {
+        height: 6px;
+    }
+    
+    .progress {
+        background-color: rgba(42, 159, 215, 0.1);
+    }
+    
+    .progress-bar {
+        background: linear-gradient(90deg, var(--cyborg-primary), var(--cyborg-secondary));
+    }
+    
+    .project-item.hidden {
+        display: none !important;
+    }
+    
+    .next-steps-section {
+        background: var(--cyborg-darker);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+        border-radius: 15px;
+        padding: 40px;
+    }
+    
+    .dropdown-menu {
+        background: var(--cyborg-darker);
+        border: 1px solid var(--cyborg-primary);
+    }
+    
+    .dropdown-item {
+        color: var(--cyborg-light);
+    }
+    
+    .dropdown-item:hover {
+        background: rgba(42, 159, 215, 0.1);
+        color: var(--cyborg-primary);
+    }
+    
+    @media (max-width: 768px) {
+        .project-stats {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .project-actions {
+            flex-direction: column;
+        }
+        
+        .project-actions .btn {
+            margin-bottom: 5px;
+        }
+    }
+    
+    /* Community Showcase Styles */
+    .community-showcase {
+        background: var(--cyborg-darker);
+        border: 1px solid rgba(42, 159, 215, 0.2);
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .community-project-card {
+        background: var(--cyborg-darker);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .community-project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(42, 159, 215, 0.2);
+        border-color: var(--cyborg-primary);
+    }
+    
+    .project-image {
+        position: relative;
+    }
+    
+    .project-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+    
+    .project-content {
+        padding: 15px;
+        flex: 1;
+    }
+    
+    .project-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .creator-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+    
+    .creator-info {
+        flex: 1;
+    }
+    
+    .creator-name {
+        font-size: 0.85rem;
+        color: var(--cyborg-light);
+    }
+    
+    .project-title {
+        color: var(--cyborg-primary);
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    
+    .project-description {
+        font-size: 0.85rem;
+        color: var(--cyborg-light);
+        line-height: 1.4;
+        margin-bottom: 10px;
+    }
+    
+    .project-stats {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 10px;
+    }
+    
+    .project-stats small {
+        font-size: 0.75rem;
+        color: var(--cyborg-muted);
+    }
+    
+    .project-actions {
+        padding: 10px 15px;
+        border-top: 1px solid rgba(42, 159, 215, 0.2);
+        display: flex;
+        gap: 5px;
+    }
+    
+    .contributor-list .contributor-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(42, 159, 215, 0.1);
+    }
+    
+    .contributor-list .contributor-item:last-child {
+        border-bottom: none;
+    }
+    
+    .contributor-avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+    
+    .contributor-info {
+        flex: 1;
+    }
+    
+    .contributor-name {
+        font-size: 0.8rem;
+        color: var(--cyborg-light);
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .stats-grid .stat-item .stat-number {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: var(--cyborg-primary);
+    }
+    
+    .stats-grid .stat-item .stat-label {
+        font-size: 0.7rem;
+        color: var(--cyborg-muted);
+        text-transform: uppercase;
+    }
+</style>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('[data-filter]');
+        const projectItems = document.querySelectorAll('.project-item');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter projects
+                projectItems.forEach(item => {
+                    const category = item.getAttribute('data-category');
+                    
+                    if (filter === 'all' || category === filter) {
+                        item.classList.remove('hidden');
+                        item.style.animation = 'fadeInUp 0.5s ease-out';
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+        });
+        
+        // Simulate random progress for demo
+        const progressBars = document.querySelectorAll('.progress-bar');
+        const progressTexts = document.querySelectorAll('.progress-text');
+        
+        progressBars.forEach((bar, index) => {
+            const randomProgress = Math.floor(Math.random() * 60);
+            bar.style.width = randomProgress + '%';
+            if (progressTexts[index]) {
+                progressTexts[index].textContent = randomProgress + '%';
+            }
+        });
+        
+        // Add hover effects to project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const icon = this.querySelector('.project-icon i');
+                if (icon) {
+                    icon.style.transform = 'scale(1.2) rotate(5deg)';
+                }
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                const icon = this.querySelector('.project-icon i');
+                if (icon) {
+                    icon.style.transform = 'scale(1) rotate(0deg)';
+                }
+            });
+        });
+    });
+    
+    // Add CSS animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Community project interactions
+    function viewProject(projectId) {
+        showNotification(`Opening project: ${projectId}. This would navigate to the project detail page.`, 'info');
+    }
+    
+    function likeProject(projectId) {
+        const button = event.target;
+        const icon = button.querySelector('i');
+        const currentLikes = parseInt(button.closest('.community-project-card').querySelector('.project-stats small:first-child').textContent.split(' ')[0]);
+        
+        // Toggle like state
+        if (icon.classList.contains('fas')) {
+            icon.className = 'far fa-heart me-1';
+            button.closest('.community-project-card').querySelector('.project-stats small:first-child').innerHTML = 
+                `<i class="fas fa-star me-1"></i>${currentLikes - 1} likes`;
+            showNotification('Removed like from project', 'info');
+        } else {
+            icon.className = 'fas fa-heart me-1';
+            button.closest('.community-project-card').querySelector('.project-stats small:first-child').innerHTML = 
+                `<i class="fas fa-star me-1"></i>${currentLikes + 1} likes`;
+            showNotification('Liked project! ❤️', 'success');
+        }
+    }
+    
+    function forkProject(projectId) {
+        showNotification('Project forked successfully! Check your profile for the copy.', 'success');
+        
+        // Update fork count
+        const forkButton = event.target;
+        const forkCount = forkButton.closest('.community-project-card').querySelector('.project-stats small:last-child');
+        const currentForks = parseInt(forkCount.textContent.split(' ')[0]);
+        forkCount.innerHTML = `<i class="fas fa-code-branch me-1"></i>${currentForks + 1} forks`;
+    }
+    
+    function shareProject() {
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.innerHTML = `
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content" style="background: var(--cyborg-darker); border: 1px solid var(--cyborg-primary);">
+                    <div class="modal-header border-bottom border-secondary">
+                        <h5 class="modal-title"><i class="fas fa-upload me-2"></i>Share Your Project</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="projectShareForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Project Title</label>
+                                        <input type="text" class="form-control bg-dark text-light border-secondary" placeholder="e.g., Personal Portfolio Website">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Category</label>
+                                        <select class="form-select bg-dark text-light border-secondary">
+                                            <option>Web Development</option>
+                                            <option>Python Projects</option>
+                                            <option>Data Science</option>
+                                            <option>AI/Machine Learning</option>
+                                            <option>Mobile Apps</option>
+                                            <option>Games</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control bg-dark text-light border-secondary" rows="3" placeholder="Describe what your project does and what technologies you used..."></textarea>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">GitHub Repository (Optional)</label>
+                                        <input type="url" class="form-control bg-dark text-light border-secondary" placeholder="https://github.com/username/repo">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Live Demo (Optional)</label>
+                                        <input type="url" class="form-control bg-dark text-light border-secondary" placeholder="https://your-project.com">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Technologies Used</label>
+                                <div class="tech-selector">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="HTML" id="tech-html">
+                                        <label class="form-check-label text-light" for="tech-html">HTML</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="CSS" id="tech-css">
+                                        <label class="form-check-label text-light" for="tech-css">CSS</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="JavaScript" id="tech-js">
+                                        <label class="form-check-label text-light" for="tech-js">JavaScript</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="Python" id="tech-python">
+                                        <label class="form-check-label text-light" for="tech-python">Python</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="React" id="tech-react">
+                                        <label class="form-check-label text-light" for="tech-react">React</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="Node.js" id="tech-node">
+                                        <label class="form-check-label text-light" for="tech-node">Node.js</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Project Image</label>
+                                <input type="file" class="form-control bg-dark text-light border-secondary" accept="image/*">
+                                <small class="form-text text-muted">Upload a screenshot or demo image of your project</small>
+                            </div>
+                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="allowFeedback" checked>
+                                <label class="form-check-label text-light" for="allowFeedback">
+                                    Allow community feedback and suggestions
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-top border-secondary">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="submitProjectShare()">Share Project</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        const bsModal = new bootstrap.Modal(modal);
+        bsModal.show();
+        modal.addEventListener('hidden.bs.modal', () => modal.remove());
+    }
+    
+    function submitProjectShare() {
+        showNotification('Project shared successfully! The community will be able to view and interact with your project.', 'success');
+        document.querySelector('.modal.show [data-bs-dismiss="modal"]').click();
+        
+        // Simulate adding the project to the community showcase
+        setTimeout(() => {
+            showNotification('Your project has been featured in the community showcase! 🌟', 'success');
+        }, 2000);
+    }
+    
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check' : type === 'info' ? 'info' : 'exclamation'}-circle me-2"></i>
+            ${message}
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            min-width: 350px;
+            max-width: 400px;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
+    }
+</script>
+{% endblock %}

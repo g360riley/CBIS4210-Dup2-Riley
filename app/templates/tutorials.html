@@ -1,0 +1,1759 @@
+{% extends "base.html" %}
+
+{% block title %}Beginner Tutorials - TechEdu Hub{% endblock %}
+
+{% block meta_description %}Start your coding journey with our beginner-friendly tutorials in Python, HTML, CSS, JavaScript, and more. Step-by-step guides for beginners.{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Beginner Tutorials</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block page_header %}
+<div class="text-center mb-5">
+    <h1 class="display-4">
+        <i class="fas fa-graduation-cap me-3"></i>Beginner Tutorials
+    </h1>
+    <p class="lead">Start your coding journey with step-by-step guides designed for beginners</p>
+    <div class="alert alert-info">
+        <i class="fas fa-lightbulb me-2"></i>
+        <strong>New to coding?</strong> No problem! These tutorials assume no prior experience.
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="tutorial-grid">
+            {% for tutorial in tutorials %}
+            <div class="card tutorial-card mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h4 class="card-title">{{ tutorial.title }}</h4>
+                            <p class="card-text text-muted">{{ tutorial.description }}</p>
+                        </div>
+                        <div class="tutorial-meta">
+                            <span class="badge badge-success">{{ tutorial.level.title() }}</span>
+                            <small class="text-muted d-block mt-1">
+                                <i class="fas fa-clock me-1"></i>{{ tutorial.duration }}
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <div class="topics-list mb-3">
+                        <h6><i class="fas fa-list me-2"></i>What you'll learn:</h6>
+                        <div class="topics-tags">
+                            {% for topic in tutorial.topics %}
+                                <span class="badge badge-outline">{{ topic }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="tutorial-progress mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="progress-label">Progress</span>
+                            <span class="progress-percent">0%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="tutorial-actions">
+                        <button class="btn btn-primary start-tutorial-btn" data-tutorial-id="{{ tutorial.id }}">
+                            <i class="fas fa-play me-2"></i>Start Tutorial
+                        </button>
+                        <button class="btn btn-outline-secondary view-outline-btn" data-tutorial-id="{{ tutorial.id }}">
+                            <i class="fas fa-book me-2"></i>View Outline
+                        </button>
+                        <button class="btn btn-success btn-sm download-resources-btn" data-tutorial-id="{{ tutorial.id }}">
+                            <i class="fas fa-download me-1"></i>Resources
+                        </button>
+                    </div>
+                    
+                    <!-- Collapsible Outline -->
+                    <div class="collapse tutorial-outline" id="outline-{{ tutorial.id }}">
+                        <div class="mt-3 p-3 border rounded">
+                            <h6><i class="fas fa-list me-2"></i>Tutorial Outline</h6>
+                            {% if tutorial.lessons %}
+                                <div class="lesson-list">
+                                    {% for lesson in tutorial.lessons %}
+                                    <div class="lesson-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>{{ lesson.id }}. {{ lesson.title }}</strong>
+                                            <small class="text-muted d-block">{{ lesson.duration }} minutes</small>
+                                        </div>
+                                        <div class="lesson-actions">
+                                            <button class="btn btn-sm btn-outline-primary try-code-btn me-2" data-lesson-id="{{ lesson.id }}" data-tutorial-id="{{ tutorial.id }}">
+                                                <i class="fas fa-code"></i> Try Code
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-success quiz-btn" data-lesson-id="{{ lesson.id }}" data-tutorial-id="{{ tutorial.id }}">
+                                                <i class="fas fa-question-circle"></i> Quiz
+                                            </button>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                
+                                <div class="mt-3 text-center">
+                                    <button class="btn btn-success quiz-all-btn" data-tutorial-id="{{ tutorial.id }}">
+                                        <i class="fas fa-trophy me-2"></i>Take Full Quiz
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="tutorial-stats">
+                            <small class="text-muted">
+                                <i class="fas fa-users me-1"></i>{{ (tutorial.id * 1234) }} learners
+                                <i class="fas fa-star ms-3 me-1"></i>4.{{ (tutorial.id + 5) }}/5
+                            </small>
+                        </div>
+                        <div class="tutorial-difficulty">
+                            {% for i in range(5) %}
+                                {% if i < 2 %}
+                                    <i class="fas fa-circle difficulty-filled"></i>
+                                {% else %}
+                                    <i class="fas fa-circle difficulty-empty"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5">
+            <h3>Ready for More?</h3>
+            <p class="lead">Once you've mastered the basics, move on to hands-on projects!</p>
+            <a href="{{ url_for('projects') }}" class="btn btn-secondary btn-lg">
+                <i class="fas fa-arrow-right me-2"></i>Intermediate Projects
+            </a>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="sidebar-content">
+            <div class="card learning-tips mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-lightbulb me-2"></i>Learning Tips
+                    </h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Practice coding daily, even if just 15 minutes
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Don't rush - understanding is more important than speed
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Build projects to apply what you learn
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Join coding communities for support
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card learning-path mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-route me-2"></i>Recommended Path
+                    </h5>
+                    <div class="path-steps">
+                        <div class="path-step completed">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <strong>Python Basics</strong>
+                                <small class="d-block text-muted">Foundation language</small>
+                            </div>
+                        </div>
+                        <div class="path-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <strong>HTML & CSS</strong>
+                                <small class="d-block text-muted">Web fundamentals</small>
+                            </div>
+                        </div>
+                        <div class="path-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <strong>JavaScript</strong>
+                                <small class="d-block text-muted">Interactive web</small>
+                            </div>
+                        </div>
+                        <div class="path-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <strong>Version Control</strong>
+                                <small class="d-block text-muted">Git & collaboration</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card community-hub mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-users me-2"></i>Community Hub
+                    </h5>
+                    
+                    <!-- Discussion Threads -->
+                    <div class="community-section mb-4">
+                        <h6 class="community-subtitle">
+                            <i class="fas fa-comments me-1"></i>Recent Discussions
+                        </h6>
+                        <div class="discussion-threads">
+                            <div class="discussion-item">
+                                <div class="discussion-header">
+                                    <img src="https://api.dicebear.com/7.x/avatars/svg?seed=sarah" alt="User" class="user-avatar">
+                                    <div class="discussion-meta">
+                                        <strong class="username">Sarah_Dev</strong>
+                                        <small class="text-muted">2h ago</small>
+                                    </div>
+                                </div>
+                                <p class="discussion-text">Anyone struggling with Python loops? Found a great visualization...</p>
+                                <div class="discussion-stats">
+                                    <small><i class="fas fa-reply me-1"></i>12 replies</small>
+                                    <small><i class="fas fa-heart me-1"></i>8 likes</small>
+                                </div>
+                            </div>
+                            
+                            <div class="discussion-item">
+                                <div class="discussion-header">
+                                    <img src="https://api.dicebear.com/7.x/avatars/svg?seed=mike" alt="User" class="user-avatar">
+                                    <div class="discussion-meta">
+                                        <strong class="username">Mike_JS</strong>
+                                        <small class="text-muted">4h ago</small>
+                                    </div>
+                                </div>
+                                <p class="discussion-text">CSS Grid vs Flexbox - when to use which?</p>
+                                <div class="discussion-stats">
+                                    <small><i class="fas fa-reply me-1"></i>7 replies</small>
+                                    <small><i class="fas fa-heart me-1"></i>15 likes</small>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary w-100 mt-2" onclick="showDiscussionModal()">
+                            <i class="fas fa-plus me-1"></i>Start Discussion
+                        </button>
+                    </div>
+                    
+                    <!-- Study Groups -->
+                    <div class="community-section mb-4">
+                        <h6 class="community-subtitle">
+                            <i class="fas fa-study me-1"></i>Active Study Groups
+                        </h6>
+                        <div class="study-groups">
+                            <div class="study-group-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong>Python Basics</strong>
+                                        <small class="d-block text-muted">5 members • Next: Tomorrow 2 PM</small>
+                                    </div>
+                                    <span class="badge badge-success">Active</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-success mt-1" onclick="joinStudyGroup('python-basics')">
+                                    <i class="fas fa-user-plus me-1"></i>Join
+                                </button>
+                            </div>
+                            
+                            <div class="study-group-item">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong>Web Dev Bootcamp</strong>
+                                        <small class="d-block text-muted">12 members • Next: Friday 7 PM</small>
+                                    </div>
+                                    <span class="badge badge-info">Forming</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-info mt-1" onclick="joinStudyGroup('web-dev')">
+                                    <i class="fas fa-user-plus me-1"></i>Join
+                                </button>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary w-100 mt-2" onclick="createStudyGroup()">
+                            <i class="fas fa-plus me-1"></i>Create Group
+                        </button>
+                    </div>
+                    
+                    <!-- Code Sharing -->
+                    <div class="community-section mb-4">
+                        <h6 class="community-subtitle">
+                            <i class="fas fa-code-branch me-1"></i>Code Snippets
+                        </h6>
+                        <div class="code-snippets">
+                            <div class="snippet-item">
+                                <div class="snippet-header">
+                                    <img src="https://api.dicebear.com/7.x/avatars/svg?seed=alex" alt="User" class="user-avatar">
+                                    <div class="snippet-meta">
+                                        <strong class="username">Alex_Code</strong>
+                                        <small class="text-muted">Python</small>
+                                    </div>
+                                </div>
+                                <p class="snippet-title">Efficient sorting algorithm</p>
+                                <div class="snippet-stats">
+                                    <small><i class="fas fa-star me-1"></i>23</small>
+                                    <small><i class="fas fa-download me-1"></i>45</small>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-warning w-100 mt-2" onclick="shareCode()">
+                            <i class="fas fa-share me-1"></i>Share Code
+                        </button>
+                    </div>
+                    
+                    <!-- Community Stats -->
+                    <div class="community-stats">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="stat-number">1.2k</div>
+                                <div class="stat-label">Members</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-number">87</div>
+                                <div class="stat-label">Online</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-number">245</div>
+                                <div class="stat-label">Posts</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card quick-links">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-external-link-alt me-2"></i>Quick Links
+                    </h5>
+                    <div class="list-group list-group-flush">
+                        <a href="{{ url_for('resources') }}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-download me-2"></i>Download Resources
+                        </a>
+                        <a href="{{ url_for('news') }}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-newspaper me-2"></i>Tech News
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fab fa-discord me-2"></i>Join Community
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fas fa-question-circle me-2"></i>Get Help
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_styles %}
+<style>
+    .tutorial-card {
+        background: var(--cyborg-darker);
+        border: 1px solid var(--cyborg-primary);
+        transition: all 0.3s ease;
+    }
+    
+    .tutorial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(42, 159, 215, 0.3);
+        border-color: var(--cyborg-secondary);
+    }
+    
+    .tutorial-meta {
+        text-align: right;
+    }
+    
+    .topics-tags .badge {
+        margin: 2px;
+        background: rgba(42, 159, 215, 0.2);
+        border: 1px solid var(--cyborg-primary);
+        color: var(--cyborg-light);
+    }
+    
+    .badge-outline {
+        background: transparent !important;
+        border: 1px solid var(--cyborg-primary) !important;
+        color: var(--cyborg-primary) !important;
+    }
+    
+    .progress {
+        background-color: rgba(42, 159, 215, 0.1);
+        height: 8px;
+    }
+    
+    .progress-bar {
+        background: linear-gradient(90deg, var(--cyborg-primary), var(--cyborg-secondary));
+    }
+    
+    .difficulty-filled {
+        color: var(--cyborg-secondary);
+        font-size: 0.8em;
+    }
+    
+    .difficulty-empty {
+        color: rgba(42, 159, 215, 0.3);
+        font-size: 0.8em;
+    }
+    
+    .sidebar-content .card {
+        background: var(--cyborg-darker);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+    }
+    
+    .path-steps {
+        position: relative;
+    }
+    
+    .path-step {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+    
+    .path-step::after {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 30px;
+        width: 2px;
+        height: 20px;
+        background: rgba(42, 159, 215, 0.3);
+        z-index: 0;
+    }
+    
+    .path-step:last-child::after {
+        display: none;
+    }
+    
+    .step-number {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(42, 159, 215, 0.2);
+        border: 2px solid var(--cyborg-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 0.9rem;
+        margin-right: 15px;
+        z-index: 1;
+        position: relative;
+    }
+    
+    .path-step.completed .step-number {
+        background: var(--cyborg-primary);
+        color: var(--cyborg-dark);
+    }
+    
+    .step-content {
+        flex-grow: 1;
+    }
+    
+    .learning-tips .fas.fa-check-circle {
+        font-size: 1.1em;
+    }
+    
+    .list-group-item {
+        background: transparent;
+        border-color: rgba(42, 159, 215, 0.2);
+        color: var(--cyborg-light);
+        transition: all 0.3s ease;
+    }
+    
+    .list-group-item:hover {
+        background: rgba(42, 159, 215, 0.1);
+        border-color: var(--cyborg-primary);
+        color: var(--cyborg-primary);
+    }
+    
+    /* Quiz Styles */
+    .quiz-answer-btn {
+        text-align: left;
+        transition: all 0.3s ease;
+        border-color: rgba(42, 159, 215, 0.3);
+    }
+    
+    .quiz-answer-btn:hover {
+        background: rgba(42, 159, 215, 0.1);
+        border-color: var(--cyborg-primary);
+        color: var(--cyborg-primary);
+    }
+    
+    .quiz-result-item {
+        background: var(--cyborg-darker);
+        border: 1px solid rgba(42, 159, 215, 0.2);
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .quiz-result-item.correct {
+        border-left: 4px solid var(--success);
+        background: rgba(40, 167, 69, 0.1);
+    }
+    
+    .quiz-result-item.incorrect {
+        border-left: 4px solid var(--danger);
+        background: rgba(220, 53, 69, 0.1);
+    }
+    
+    .answer-comparison {
+        margin-top: 10px;
+    }
+    
+    .user-answer, .correct-answer {
+        margin-bottom: 8px;
+    }
+    
+    .question-text {
+        color: var(--cyborg-light);
+        font-size: 0.95em;
+    }
+    
+    .question-num {
+        color: var(--cyborg-primary);
+        font-size: 1.1em;
+    }
+    
+    .quiz-progress {
+        height: 6px;
+        background-color: rgba(42, 159, 215, 0.2);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    
+    .quiz-progress-bar {
+        background: linear-gradient(90deg, var(--cyborg-primary), var(--cyborg-secondary));
+        height: 100%;
+        transition: width 0.3s ease;
+    }
+    
+    /* Community Hub Styles */
+    .community-hub {
+        background: var(--cyborg-darker);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+    }
+    
+    .community-subtitle {
+        color: var(--cyborg-primary);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(42, 159, 215, 0.2);
+        padding-bottom: 0.5rem;
+    }
+    
+    .discussion-item, .study-group-item, .snippet-item {
+        background: rgba(42, 159, 215, 0.05);
+        border: 1px solid rgba(42, 159, 215, 0.1);
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    .discussion-item:hover, .study-group-item:hover, .snippet-item:hover {
+        background: rgba(42, 159, 215, 0.1);
+        border-color: rgba(42, 159, 215, 0.3);
+        cursor: pointer;
+    }
+    
+    .discussion-header, .snippet-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    
+    .user-avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+    
+    .discussion-meta, .snippet-meta {
+        flex: 1;
+    }
+    
+    .username {
+        font-size: 0.8rem;
+        color: var(--cyborg-light);
+    }
+    
+    .discussion-text, .snippet-title {
+        font-size: 0.8rem;
+        color: var(--cyborg-light);
+        margin-bottom: 6px;
+        line-height: 1.3;
+    }
+    
+    .discussion-stats, .snippet-stats {
+        display: flex;
+        gap: 12px;
+    }
+    
+    .discussion-stats small, .snippet-stats small {
+        font-size: 0.7rem;
+        color: var(--cyborg-muted);
+    }
+    
+    .study-group-item .badge {
+        font-size: 0.65rem;
+        padding: 3px 6px;
+    }
+    
+    .community-stats .stat-number {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--cyborg-primary);
+    }
+    
+    .community-stats .stat-label {
+        font-size: 0.7rem;
+        color: var(--cyborg-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .community-section .btn {
+        border-color: rgba(42, 159, 215, 0.3);
+        color: var(--cyborg-light);
+        font-size: 0.8rem;
+    }
+    
+    .community-section .btn:hover {
+        border-color: var(--cyborg-primary);
+        color: var(--cyborg-primary);
+        background: rgba(42, 159, 215, 0.1);
+    }
+</style>
+{% endblock %}
+
+<!-- Code Playground Modal -->
+<div class="modal fade" id="codePlaygroundModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-code me-2"></i>Interactive Code Playground
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Code Editor</h6>
+                        <div class="code-editor">
+                            <textarea id="codeEditor" class="form-control" rows="12" spellcheck="false"></textarea>
+                        </div>
+                        <div class="editor-actions mt-2">
+                            <button class="btn btn-success btn-sm" id="runCodeBtn">
+                                <i class="fas fa-play me-1"></i>Run Code
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="resetCodeBtn">
+                                <i class="fas fa-undo me-1"></i>Reset
+                            </button>
+                            <button class="btn btn-info btn-sm" id="copyCodeBtn">
+                                <i class="fas fa-copy me-1"></i>Copy
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Output</h6>
+                        <div class="code-output">
+                            <pre id="codeOutput" class="bg-dark text-light p-3 rounded">Ready to run your code...</pre>
+                        </div>
+                        <div class="mt-3">
+                            <h6>Explanation</h6>
+                            <div id="codeExplanation" class="explanation-text">
+                                Select a lesson to see code explanation here.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="nextLessonBtn">
+                    <i class="fas fa-arrow-right me-1"></i>Next Lesson
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tutorial Progress Modal -->
+<div class="modal fade" id="tutorialProgressModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-chart-line me-2"></i>Your Progress
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="progress-stats">
+                    <div class="stat-item text-center mb-3">
+                        <div class="circular-progress">
+                            <svg class="progress-ring" width="120" height="120">
+                                <circle class="progress-ring-circle" stroke="var(--cyborg-primary)" stroke-width="4" 
+                                        fill="transparent" r="52" cx="60" cy="60"/>
+                            </svg>
+                            <div class="progress-text">0%</div>
+                        </div>
+                        <h6 class="mt-2">Overall Progress</h6>
+                    </div>
+                    
+                    <div class="achievements">
+                        <h6><i class="fas fa-trophy me-2"></i>Achievements</h6>
+                        <div class="achievement-list">
+                            <!-- Dynamic achievements will be added here -->
+                        </div>
+                    </div>
+                    
+                    <div class="learning-streak mt-3">
+                        <h6><i class="fas fa-fire me-2"></i>Learning Streak</h6>
+                        <p class="text-muted">Keep coding daily to maintain your streak!</p>
+                        <div class="streak-counter">
+                            <span class="streak-number">0</span> days
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Interactive Quiz Modal -->
+<div class="modal fade" id="quizModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-question-circle me-2"></i>Interactive Quiz
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="quiz-container">
+                    <div class="quiz-progress mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="quiz-progress-text">Question <span id="currentQuestionNum">1</span> of <span id="totalQuestions">5</span></span>
+                            <span class="quiz-score">Score: <span id="currentScore">0</span>/<span id="maxScore">0</span></span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar quiz-progress-bar" role="progressbar" style="width: 20%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-question-container">
+                        <div id="quizContent">
+                            <!-- Quiz questions will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-navigation mt-4">
+                        <button class="btn btn-secondary" id="prevQuestionBtn" disabled>
+                            <i class="fas fa-arrow-left me-2"></i>Previous
+                        </button>
+                        <button class="btn btn-primary float-end" id="nextQuestionBtn">
+                            Next<i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                        <button class="btn btn-success float-end" id="finishQuizBtn" style="display: none;">
+                            <i class="fas fa-check me-2"></i>Finish Quiz
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quiz Results -->
+                <div class="quiz-results" id="quizResults" style="display: none;">
+                    <div class="text-center">
+                        <div class="quiz-result-icon mb-3">
+                            <i class="fas fa-trophy fa-4x text-warning"></i>
+                        </div>
+                        <h4 class="quiz-result-title">Quiz Complete!</h4>
+                        <div class="quiz-result-score mb-3">
+                            <div class="score-display">
+                                <span class="final-score">0</span>/<span class="final-total">0</span>
+                            </div>
+                            <div class="score-percentage">0%</div>
+                        </div>
+                        
+                        <div class="quiz-result-message mb-3">
+                            <p class="result-message-text">Great job!</p>
+                        </div>
+                        
+                        <div class="quiz-result-actions">
+                            <button class="btn btn-primary" id="retakeQuizBtn">
+                                <i class="fas fa-redo me-2"></i>Retake Quiz
+                            </button>
+                            <button class="btn btn-success" id="nextLessonFromQuizBtn">
+                                <i class="fas fa-arrow-right me-2"></i>Next Lesson
+                            </button>
+                        </div>
+                        
+                        <div class="quiz-achievements mt-3">
+                            <!-- Achievement badges will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block page_scripts %}
+<script>
+    // Tutorial data with code examples
+    const tutorialData = {
+        {% for tutorial in tutorials %}
+        {{ tutorial.id }}: {
+            title: "{{ tutorial.title }}",
+            lessons: [
+                {% for lesson in tutorial.lessons %}
+                {
+                    id: {{ lesson.id }},
+                    title: "{{ lesson.title }}",
+                    code: `{{ lesson.code_example | replace('\n', '\\n') | replace('"', '\\"') }}`,
+                    explanation: "{{ lesson.title }} - Practice this fundamental concept with interactive code."
+                }{{ ',' if not loop.last }}
+                {% endfor %}
+            ]
+        }{{ ',' if not loop.last }}
+        {% endfor %}
+    };
+
+    // Progress tracking system
+    class TutorialProgress {
+        constructor() {
+            this.progress = JSON.parse(localStorage.getItem('tutorialProgress')) || {};
+            this.streak = parseInt(localStorage.getItem('learningStreak')) || 0;
+            this.achievements = JSON.parse(localStorage.getItem('achievements')) || [];
+        }
+
+        updateProgress(tutorialId, lessonId) {
+            if (!this.progress[tutorialId]) {
+                this.progress[tutorialId] = { completedLessons: [], startedAt: Date.now() };
+            }
+            
+            if (!this.progress[tutorialId].completedLessons.includes(lessonId)) {
+                this.progress[tutorialId].completedLessons.push(lessonId);
+                this.checkAchievements(tutorialId);
+                this.saveProgress();
+            }
+        }
+
+        getProgressPercent(tutorialId) {
+            if (!this.progress[tutorialId] || !tutorialData[tutorialId]) return 0;
+            const completed = this.progress[tutorialId].completedLessons.length;
+            const total = tutorialData[tutorialId].lessons.length;
+            return Math.round((completed / total) * 100);
+        }
+
+        checkAchievements(tutorialId) {
+            const percent = this.getProgressPercent(tutorialId);
+            
+            if (percent === 100 && !this.achievements.includes('first_tutorial')) {
+                this.achievements.push('first_tutorial');
+                this.showAchievement('🎓 Tutorial Master', 'Completed your first tutorial!');
+            }
+            
+            if (percent >= 50 && !this.achievements.includes('halfway_hero')) {
+                this.achievements.push('halfway_hero');
+                this.showAchievement('⚡ Halfway Hero', 'You\'re halfway through a tutorial!');
+            }
+        }
+
+        showAchievement(title, description) {
+            const notification = document.createElement('div');
+            notification.className = 'achievement-notification';
+            notification.innerHTML = `
+                <div class="achievement-content">
+                    <h6>${title}</h6>
+                    <p>${description}</p>
+                </div>
+            `;
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1060;
+                background: linear-gradient(135deg, var(--cyborg-primary), var(--cyborg-secondary));
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                min-width: 300px;
+            `;
+            
+            document.body.appendChild(notification);
+            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        saveProgress() {
+            localStorage.setItem('tutorialProgress', JSON.stringify(this.progress));
+            localStorage.setItem('achievements', JSON.stringify(this.achievements));
+        }
+    }
+
+    const progressTracker = new TutorialProgress();
+
+    // Quiz data for each tutorial
+    const quizData = {
+        1: { // Python Basics
+            questions: [
+                {
+                    id: 1,
+                    question: "Which symbol is used to create a comment in Python?",
+                    options: ["//", "#", "/*", "<!--"],
+                    correct: 1,
+                    explanation: "In Python, the # symbol is used to create single-line comments."
+                },
+                {
+                    id: 2,
+                    question: "What will this code output: print(f'Hello, {'World'}!')?",
+                    options: ["Hello, World!", "Hello, {World}!", "SyntaxError", "Hello, 'World'!"],
+                    correct: 0,
+                    explanation: "F-strings in Python allow you to embed expressions inside string literals."
+                },
+                {
+                    id: 3,
+                    question: "Which data type is used to store True/False values?",
+                    options: ["str", "int", "bool", "float"],
+                    correct: 2,
+                    explanation: "The bool data type stores boolean values: True or False."
+                },
+                {
+                    id: 4,
+                    question: "How do you define a function in Python?",
+                    options: ["function myFunc():", "def myFunc():", "func myFunc():", "define myFunc():"],
+                    correct: 1,
+                    explanation: "Functions in Python are defined using the 'def' keyword."
+                },
+                {
+                    id: 5,
+                    question: "What does range(5) generate?",
+                    options: ["[1,2,3,4,5]", "[0,1,2,3,4]", "[5]", "[0,1,2,3,4,5]"],
+                    correct: 1,
+                    explanation: "range(5) generates numbers from 0 to 4 (5 is not included)."
+                }
+            ]
+        },
+        2: { // HTML & CSS
+            questions: [
+                {
+                    id: 1,
+                    question: "Which HTML tag is used for the largest heading?",
+                    options: ["<h6>", "<h1>", "<header>", "<heading>"],
+                    correct: 1,
+                    explanation: "<h1> is the largest heading tag in HTML."
+                },
+                {
+                    id: 2,
+                    question: "What does CSS stand for?",
+                    options: ["Cascading Style Sheets", "Computer Style Sheets", "Creative Style Sheets", "Colorful Style Sheets"],
+                    correct: 0,
+                    explanation: "CSS stands for Cascading Style Sheets."
+                },
+                {
+                    id: 3,
+                    question: "Which CSS property changes the text color?",
+                    options: ["font-color", "text-color", "color", "text-style"],
+                    correct: 2,
+                    explanation: "The 'color' property is used to change text color in CSS."
+                },
+                {
+                    id: 4,
+                    question: "What does <!DOCTYPE html> declare?",
+                    options: ["HTML version", "Document type", "HTML5 document", "All of the above"],
+                    correct: 3,
+                    explanation: "<!DOCTYPE html> declares that this is an HTML5 document."
+                },
+                {
+                    id: 5,
+                    question: "Which CSS property controls the space between elements?",
+                    options: ["padding", "margin", "spacing", "border"],
+                    correct: 1,
+                    explanation: "The 'margin' property controls the space outside an element."
+                }
+            ]
+        },
+        3: { // JavaScript Essentials
+            questions: [
+                {
+                    id: 1,
+                    question: "How do you declare a variable in JavaScript (ES6+)?",
+                    options: ["var x", "let x", "const x", "Both let and const"],
+                    correct: 3,
+                    explanation: "In ES6+, both 'let' and 'const' are preferred over 'var' for variable declaration."
+                },
+                {
+                    id: 2,
+                    question: "What does DOM stand for?",
+                    options: ["Document Object Model", "Data Object Management", "Dynamic Object Method", "Document Orientation Model"],
+                    correct: 0,
+                    explanation: "DOM stands for Document Object Model."
+                },
+                {
+                    id: 3,
+                    question: "How do you select an element by ID in JavaScript?",
+                    options: ["document.getById('id')", "document.getElementById('id')", "document.selectById('id')", "document.findById('id')"],
+                    correct: 1,
+                    explanation: "document.getElementById('id') is used to select an element by its ID."
+                },
+                {
+                    id: 4,
+                    question: "Which operator is used for strict equality in JavaScript?",
+                    options: ["==", "===", "=", "!="],
+                    correct: 1,
+                    explanation: "=== is the strict equality operator that compares both value and type."
+                },
+                {
+                    id: 5,
+                    question: "How do you add an event listener to an element?",
+                    options: ["element.addEventListener()", "element.addEvent()", "element.onEvent()", "element.bindEvent()"],
+                    correct: 0,
+                    explanation: "addEventListener() is the method used to attach event handlers to elements."
+                }
+            ]
+        },
+        4: { // Git & Version Control
+            questions: [
+                {
+                    id: 1,
+                    question: "What command initializes a new Git repository?",
+                    options: ["git start", "git init", "git new", "git create"],
+                    correct: 1,
+                    explanation: "git init initializes a new Git repository in the current directory."
+                },
+                {
+                    id: 2,
+                    question: "Which command shows the current status of your repository?",
+                    options: ["git state", "git status", "git info", "git show"],
+                    correct: 1,
+                    explanation: "git status shows the current state of the working directory and staging area."
+                },
+                {
+                    id: 3,
+                    question: "What does 'git add .' do?",
+                    options: ["Adds one file", "Adds all files in current directory", "Adds all modified files", "Adds all new files"],
+                    correct: 1,
+                    explanation: "git add . stages all files in the current directory and subdirectories."
+                },
+                {
+                    id: 4,
+                    question: "How do you create a new branch?",
+                    options: ["git branch new-branch", "git checkout -b new-branch", "git new new-branch", "Both A and B"],
+                    correct: 3,
+                    explanation: "You can create a branch with 'git branch' or create and switch with 'git checkout -b'."
+                },
+                {
+                    id: 5,
+                    question: "What does 'git pull' do?",
+                    options: ["Downloads changes", "Uploads changes", "Fetches and merges changes", "Creates a backup"],
+                    correct: 2,
+                    explanation: "git pull fetches changes from the remote repository and merges them into your current branch."
+                }
+            ]
+        }
+    };
+
+    // Code playground functionality
+    class CodePlayground {
+        constructor() {
+            this.currentCode = '';
+            this.currentTutorial = null;
+            this.currentLesson = null;
+        }
+
+        open(tutorialId, lessonId) {
+            this.currentTutorial = tutorialId;
+            this.currentLesson = lessonId;
+            
+            const tutorial = tutorialData[tutorialId];
+            const lesson = tutorial.lessons.find(l => l.id == lessonId);
+            
+            if (lesson) {
+                document.getElementById('codeEditor').value = lesson.code;
+                document.getElementById('codeExplanation').textContent = lesson.explanation;
+                document.querySelector('#codePlaygroundModal .modal-title').innerHTML = 
+                    `<i class="fas fa-code me-2"></i>${tutorial.title} - ${lesson.title}`;
+                
+                const modal = new bootstrap.Modal(document.getElementById('codePlaygroundModal'));
+                modal.show();
+            }
+        }
+
+        runCode() {
+            const code = document.getElementById('codeEditor').value;
+            const output = document.getElementById('codeOutput');
+            
+            // Simulate code execution
+            output.textContent = 'Running code...\n';
+            
+            setTimeout(() => {
+                try {
+                    if (code.includes('print(')) {
+                        const matches = code.match(/print\(([^)]+)\)/g);
+                        let result = '';
+                        matches?.forEach(match => {
+                            const content = match.replace('print(', '').replace(')', '');
+                            result += eval(content) + '\n';
+                        });
+                        output.textContent = result || 'Code executed successfully!';
+                    } else if (code.includes('console.log')) {
+                        const matches = code.match(/console\.log\(([^)]+)\)/g);
+                        let result = '';
+                        matches?.forEach(match => {
+                            const content = match.replace('console.log(', '').replace(')', '');
+                            result += eval(content) + '\n';
+                        });
+                        output.textContent = result || 'Code executed successfully!';
+                    } else {
+                        output.textContent = 'Code executed successfully!\n(This is a simulation - real execution coming soon)';
+                    }
+                    
+                    // Track progress
+                    if (this.currentTutorial && this.currentLesson) {
+                        progressTracker.updateProgress(this.currentTutorial, this.currentLesson);
+                        this.updateProgressDisplay();
+                    }
+                    
+                } catch (error) {
+                    output.textContent = `Error: ${error.message}`;
+                }
+            }, 1000);
+        }
+
+        resetCode() {
+            const tutorial = tutorialData[this.currentTutorial];
+            const lesson = tutorial?.lessons.find(l => l.id == this.currentLesson);
+            if (lesson) {
+                document.getElementById('codeEditor').value = lesson.code;
+                document.getElementById('codeOutput').textContent = 'Code reset. Ready to run!';
+            }
+        }
+
+        copyCode() {
+            const code = document.getElementById('codeEditor').value;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.getElementById('copyCodeBtn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+                setTimeout(() => btn.innerHTML = originalText, 2000);
+            });
+        }
+
+        updateProgressDisplay() {
+            document.querySelectorAll('.progress-bar').forEach((bar, index) => {
+                const tutorialId = index + 1;
+                const percent = progressTracker.getProgressPercent(tutorialId);
+                bar.style.width = percent + '%';
+                bar.closest('.tutorial-progress').querySelector('.progress-percent').textContent = percent + '%';
+            });
+        }
+    }
+
+    const codePlayground = new CodePlayground();
+
+    // Quiz Management System
+    class QuizManager {
+        constructor() {
+            this.currentQuiz = null;
+            this.currentQuestionIndex = 0;
+            this.userAnswers = [];
+            this.score = 0;
+            this.isComplete = false;
+        }
+
+        startQuiz(tutorialId, lessonId) {
+            const tutorial = tutorialData[tutorialId];
+            if (!tutorial || !tutorial.quiz) return;
+
+            this.currentQuiz = tutorial.quiz;
+            this.currentQuestionIndex = 0;
+            this.userAnswers = [];
+            this.score = 0;
+            this.isComplete = false;
+
+            // Update quiz modal
+            document.querySelector('#quizModal .modal-title').innerHTML = 
+                `<i class="fas fa-question-circle me-2"></i>Quiz: ${tutorial.title}`;
+            
+            this.showQuestion();
+            
+            const modal = new bootstrap.Modal(document.getElementById('quizModal'));
+            modal.show();
+        }
+
+        showQuestion() {
+            if (!this.currentQuiz || this.currentQuestionIndex >= this.currentQuiz.length) {
+                this.showResults();
+                return;
+            }
+
+            const question = this.currentQuiz[this.currentQuestionIndex];
+            const quizContent = document.getElementById('quizContent');
+            const quizResults = document.getElementById('quizResults');
+
+            quizContent.style.display = 'block';
+            quizResults.style.display = 'none';
+
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('questionNumber').textContent = 
+                `Question ${this.currentQuestionIndex + 1} of ${this.currentQuiz.length}`;
+
+            // Update progress bar
+            const progressPercent = ((this.currentQuestionIndex + 1) / this.currentQuiz.length) * 100;
+            document.getElementById('quizProgressBar').style.width = progressPercent + '%';
+
+            // Generate answer options
+            const answersContainer = document.getElementById('quizAnswers');
+            answersContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const answerButton = document.createElement('button');
+                answerButton.className = 'btn btn-outline-primary quiz-answer-btn d-block w-100 mb-2 text-start';
+                answerButton.innerHTML = `<strong>${String.fromCharCode(65 + index)}.</strong> ${option}`;
+                answerButton.onclick = () => this.selectAnswer(index);
+                answersContainer.appendChild(answerButton);
+            });
+
+            // Update navigation buttons
+            document.getElementById('prevQuestionBtn').style.display = 
+                this.currentQuestionIndex > 0 ? 'inline-block' : 'none';
+            document.getElementById('nextQuestionBtn').style.display = 'none';
+            document.getElementById('submitQuizBtn').style.display = 'none';
+        }
+
+        selectAnswer(answerIndex) {
+            // Remove previous selection
+            document.querySelectorAll('.quiz-answer-btn').forEach(btn => {
+                btn.classList.remove('btn-primary', 'btn-outline-primary');
+                btn.classList.add('btn-outline-primary');
+            });
+
+            // Highlight selected answer
+            const selectedButton = document.querySelectorAll('.quiz-answer-btn')[answerIndex];
+            selectedButton.classList.remove('btn-outline-primary');
+            selectedButton.classList.add('btn-primary');
+
+            // Store answer
+            this.userAnswers[this.currentQuestionIndex] = answerIndex;
+
+            // Show navigation buttons
+            if (this.currentQuestionIndex < this.currentQuiz.length - 1) {
+                document.getElementById('nextQuestionBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('submitQuizBtn').style.display = 'inline-block';
+            }
+        }
+
+        nextQuestion() {
+            if (this.currentQuestionIndex < this.currentQuiz.length - 1) {
+                this.currentQuestionIndex++;
+                this.showQuestion();
+            }
+        }
+
+        prevQuestion() {
+            if (this.currentQuestionIndex > 0) {
+                this.currentQuestionIndex--;
+                this.showQuestion();
+            }
+        }
+
+        submitQuiz() {
+            this.calculateScore();
+            this.showResults();
+        }
+
+        calculateScore() {
+            this.score = 0;
+            this.currentQuiz.forEach((question, index) => {
+                if (this.userAnswers[index] === question.correct) {
+                    this.score++;
+                }
+            });
+        }
+
+        showResults() {
+            this.isComplete = true;
+            const quizContent = document.getElementById('quizContent');
+            const quizResults = document.getElementById('quizResults');
+
+            quizContent.style.display = 'none';
+            quizResults.style.display = 'block';
+
+            const percentage = Math.round((this.score / this.currentQuiz.length) * 100);
+            
+            document.getElementById('quizScore').textContent = 
+                `${this.score} out of ${this.currentQuiz.length}`;
+            document.getElementById('quizPercentage').textContent = percentage + '%';
+
+            // Determine performance message
+            let message, badgeClass;
+            if (percentage >= 90) {
+                message = "Excellent work! You've mastered this topic!";
+                badgeClass = "badge-success";
+            } else if (percentage >= 70) {
+                message = "Good job! You have a solid understanding.";
+                badgeClass = "badge-info";
+            } else if (percentage >= 50) {
+                message = "Not bad! Review the material and try again.";
+                badgeClass = "badge-warning";
+            } else {
+                message = "Keep studying! Practice makes perfect.";
+                badgeClass = "badge-danger";
+            }
+
+            document.getElementById('quizMessage').textContent = message;
+            document.getElementById('quizPercentage').className = `badge ${badgeClass}`;
+
+            // Show detailed results
+            const detailedResults = document.getElementById('detailedResults');
+            detailedResults.innerHTML = '';
+
+            this.currentQuiz.forEach((question, index) => {
+                const isCorrect = this.userAnswers[index] === question.correct;
+                const resultItem = document.createElement('div');
+                resultItem.className = `quiz-result-item ${isCorrect ? 'correct' : 'incorrect'}`;
+                
+                const userAnswer = this.userAnswers[index] !== undefined ? 
+                    question.options[this.userAnswers[index]] : 'No answer';
+                const correctAnswer = question.options[question.correct];
+
+                resultItem.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <strong class="question-num">Q${index + 1}</strong>
+                        <span class="badge ${isCorrect ? 'badge-success' : 'badge-danger'}">
+                            <i class="fas fa-${isCorrect ? 'check' : 'times'}"></i>
+                        </span>
+                    </div>
+                    <p class="question-text mb-2">${question.question}</p>
+                    <div class="answer-comparison">
+                        <div class="user-answer">
+                            <small class="text-muted">Your answer:</small>
+                            <div class="${isCorrect ? 'text-success' : 'text-danger'}">${userAnswer}</div>
+                        </div>
+                        ${!isCorrect ? `
+                            <div class="correct-answer">
+                                <small class="text-muted">Correct answer:</small>
+                                <div class="text-success">${correctAnswer}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                detailedResults.appendChild(resultItem);
+            });
+        }
+
+        retakeQuiz() {
+            this.currentQuestionIndex = 0;
+            this.userAnswers = [];
+            this.score = 0;
+            this.isComplete = false;
+            this.showQuestion();
+        }
+    }
+
+    const quizManager = new QuizManager();
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize progress display
+        codePlayground.updateProgressDisplay();
+        
+        // Tutorial action buttons
+        document.querySelectorAll('.start-tutorial-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tutorialId = this.getAttribute('data-tutorial-id');
+                const modal = new bootstrap.Modal(document.getElementById('tutorialProgressModal'));
+                modal.show();
+                
+                // Update progress modal with current tutorial data
+                updateProgressModal(tutorialId);
+            });
+        });
+
+        document.querySelectorAll('.view-outline-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tutorialId = this.getAttribute('data-tutorial-id');
+                const outline = document.getElementById('outline-' + tutorialId);
+                const collapse = new bootstrap.Collapse(outline, {
+                    toggle: true
+                });
+            });
+        });
+
+        document.querySelectorAll('.download-resources-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tutorialId = this.getAttribute('data-tutorial-id');
+                simulateDownload(`Tutorial ${tutorialId} Resources.zip`);
+            });
+        });
+
+        // Try code buttons
+        document.querySelectorAll('.try-code-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tutorialId = this.getAttribute('data-tutorial-id');
+                const lessonId = this.getAttribute('data-lesson-id');
+                codePlayground.open(tutorialId, lessonId);
+            });
+        });
+
+        // Code playground event listeners
+        document.getElementById('runCodeBtn')?.addEventListener('click', () => codePlayground.runCode());
+        document.getElementById('resetCodeBtn')?.addEventListener('click', () => codePlayground.resetCode());
+        document.getElementById('copyCodeBtn')?.addEventListener('click', () => codePlayground.copyCode());
+
+        // Quiz event listeners
+        document.querySelectorAll('.quiz-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tutorialId = this.getAttribute('data-tutorial-id');
+                const lessonId = this.getAttribute('data-lesson-id');
+                quizManager.startQuiz(tutorialId, lessonId);
+            });
+        });
+
+        // Quiz modal event listeners
+        document.getElementById('nextQuestionBtn')?.addEventListener('click', () => quizManager.nextQuestion());
+        document.getElementById('prevQuestionBtn')?.addEventListener('click', () => quizManager.prevQuestion());
+        document.getElementById('submitQuizBtn')?.addEventListener('click', () => quizManager.submitQuiz());
+        document.getElementById('retakeQuizBtn')?.addEventListener('click', () => quizManager.retakeQuiz());
+
+        // Tutorial card interactions
+        document.querySelectorAll('.tutorial-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (!e.target.closest('.btn') && !e.target.closest('.collapse')) {
+                    this.classList.toggle('selected');
+                }
+            });
+        });
+    });
+
+    function updateProgressModal(tutorialId) {
+        const progress = progressTracker.getProgressPercent(tutorialId);
+        const progressText = document.querySelector('.progress-text');
+        const progressRing = document.querySelector('.progress-ring-circle');
+        
+        if (progressText) progressText.textContent = progress + '%';
+        
+        // Animate circular progress
+        const circumference = 2 * Math.PI * 52;
+        const offset = circumference - (progress / 100) * circumference;
+        progressRing.style.strokeDasharray = circumference;
+        progressRing.style.strokeDashoffset = offset;
+        
+        // Update achievements
+        const achievementList = document.querySelector('.achievement-list');
+        achievementList.innerHTML = '';
+        
+        progressTracker.achievements.forEach(achievement => {
+            const achievementElement = document.createElement('div');
+            achievementElement.className = 'achievement-item';
+            
+            const achievementData = {
+                'first_tutorial': { icon: '🎓', title: 'Tutorial Master', desc: 'Completed first tutorial' },
+                'halfway_hero': { icon: '⚡', title: 'Halfway Hero', desc: 'Reached 50% progress' }
+            };
+            
+            const data = achievementData[achievement];
+            if (data) {
+                achievementElement.innerHTML = `
+                    <div class="d-flex align-items-center">
+                        <span class="achievement-icon me-3">${data.icon}</span>
+                        <div>
+                            <strong>${data.title}</strong>
+                            <small class="d-block text-muted">${data.desc}</small>
+                        </div>
+                    </div>
+                `;
+                achievementList.appendChild(achievementElement);
+            }
+        });
+        
+        if (progressTracker.achievements.length === 0) {
+            achievementList.innerHTML = '<p class="text-muted">Complete lessons to unlock achievements!</p>';
+        }
+    }
+
+    function simulateDownload(filename) {
+        const notification = document.createElement('div');
+        notification.className = 'alert alert-success';
+        notification.innerHTML = `
+            <i class="fas fa-download me-2"></i>
+            Downloading ${filename}...
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            min-width: 300px;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        setTimeout(() => {
+            notification.innerHTML = `
+                <i class="fas fa-check me-2"></i>
+                ${filename} downloaded successfully!
+            `;
+        }, 2000);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
+    }
+    
+    // Community Features
+    function showDiscussionModal() {
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.innerHTML = `
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: var(--cyborg-darker); border: 1px solid var(--cyborg-primary);">
+                    <div class="modal-header border-bottom border-secondary">
+                        <h5 class="modal-title"><i class="fas fa-comments me-2"></i>Start New Discussion</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="discussionForm">
+                            <div class="mb-3">
+                                <label class="form-label">Discussion Title</label>
+                                <input type="text" class="form-control bg-dark text-light border-secondary" placeholder="What would you like to discuss?">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <select class="form-select bg-dark text-light border-secondary">
+                                    <option>Python</option>
+                                    <option>JavaScript</option>
+                                    <option>HTML/CSS</option>
+                                    <option>General</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control bg-dark text-light border-secondary" rows="3" placeholder="Describe your question or topic..."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-top border-secondary">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="submitDiscussion()">Post Discussion</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        const bsModal = new bootstrap.Modal(modal);
+        bsModal.show();
+        modal.addEventListener('hidden.bs.modal', () => modal.remove());
+    }
+    
+    function submitDiscussion() {
+        showNotification('Discussion posted successfully! The community will respond soon.', 'success');
+        document.querySelector('.modal.show [data-bs-dismiss="modal"]').click();
+    }
+    
+    function joinStudyGroup(groupId) {
+        showNotification(`Joined study group successfully! Check your email for meeting details.`, 'success');
+        
+        // Update button to show joined status
+        event.target.innerHTML = '<i class="fas fa-check me-1"></i>Joined';
+        event.target.className = 'btn btn-sm btn-success mt-1';
+        event.target.disabled = true;
+    }
+    
+    function createStudyGroup() {
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.innerHTML = `
+            <div class="modal-dialog">
+                <div class="modal-content" style="background: var(--cyborg-darker); border: 1px solid var(--cyborg-primary);">
+                    <div class="modal-header border-bottom border-secondary">
+                        <h5 class="modal-title"><i class="fas fa-users me-2"></i>Create Study Group</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="studyGroupForm">
+                            <div class="mb-3">
+                                <label class="form-label">Group Name</label>
+                                <input type="text" class="form-control bg-dark text-light border-secondary" placeholder="e.g., Advanced Python">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Focus Topic</label>
+                                <select class="form-select bg-dark text-light border-secondary">
+                                    <option>Python Fundamentals</option>
+                                    <option>Web Development</option>
+                                    <option>Data Structures</option>
+                                    <option>Algorithms</option>
+                                    <option>Machine Learning</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Meeting Schedule</label>
+                                <input type="text" class="form-control bg-dark text-light border-secondary" placeholder="e.g., Tuesdays 7 PM EST">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control bg-dark text-light border-secondary" rows="3" placeholder="What will this study group focus on?"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-top border-secondary">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="submitStudyGroup()">Create Group</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        const bsModal = new bootstrap.Modal(modal);
+        bsModal.show();
+        modal.addEventListener('hidden.bs.modal', () => modal.remove());
+    }
+    
+    function submitStudyGroup() {
+        showNotification('Study group created successfully! Others can now join your group.', 'success');
+        document.querySelector('.modal.show [data-bs-dismiss="modal"]').click();
+    }
+    
+    function shareCode() {
+        const modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.innerHTML = `
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content" style="background: var(--cyborg-darker); border: 1px solid var(--cyborg-primary);">
+                    <div class="modal-header border-bottom border-secondary">
+                        <h5 class="modal-title"><i class="fas fa-code-branch me-2"></i>Share Code Snippet</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="codeShareForm">
+                            <div class="mb-3">
+                                <label class="form-label">Snippet Title</label>
+                                <input type="text" class="form-control bg-dark text-light border-secondary" placeholder="e.g., Quick Sort Algorithm">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Programming Language</label>
+                                <select class="form-select bg-dark text-light border-secondary">
+                                    <option>Python</option>
+                                    <option>JavaScript</option>
+                                    <option>HTML</option>
+                                    <option>CSS</option>
+                                    <option>Java</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Code</label>
+                                <textarea class="form-control bg-dark text-light border-secondary font-monospace" rows="6" placeholder="Paste your code here..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control bg-dark text-light border-secondary" rows="2" placeholder="Explain what this code does..."></textarea>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="allowComments">
+                                <label class="form-check-label text-light" for="allowComments">
+                                    Allow community comments and suggestions
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-top border-secondary">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="submitCodeShare()">Share Code</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        const bsModal = new bootstrap.Modal(modal);
+        bsModal.show();
+        modal.addEventListener('hidden.bs.modal', () => modal.remove());
+    }
+    
+    function submitCodeShare() {
+        showNotification('Code snippet shared successfully! The community can now view and comment on your code.', 'success');
+        document.querySelector('.modal.show [data-bs-dismiss="modal"]').click();
+    }
+    
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check' : 'info'}-circle me-2"></i>
+            ${message}
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            min-width: 350px;
+            max-width: 400px;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
+    }
+</script>
+{% endblock %}

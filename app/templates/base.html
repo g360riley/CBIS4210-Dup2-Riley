@@ -1,142 +1,347 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{% block html_lang %}en{% endblock %}">
 <head>
     <meta charset="UTF-8">
-    <title>GCSU MIS Starter Kit</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GCSU MIS Starter Kit{% endblock %}</title>
+    {% block meta_tags %}
+    <meta name="description" content="{% block meta_description %}Georgia College & State University MIS Flask Starter Kit{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}GCSU, MIS, Flask, Web Development{% endblock %}">
+    <meta name="author" content="{% block meta_author %}GCSU MIS Department{% endblock %}">
+    {% endblock %}
+    
+    {% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/cyborg/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+    {% endblock %}
+    {% block base_styles %}
     <style>
         :root {
-            --gcsu-blue: #003399;
-            --gcsu-green: #006633;
-            --gcsu-light-blue: #e6f2ff;
-            --gcsu-light-green: #e6f7e6;
+            --cyborg-primary: #2A9FD7;
+            --cyborg-secondary: #77B300;
+            --cyborg-accent: #9933CC;
+            --cyborg-danger: #CC0000;
+            --cyborg-warning: #FF8800;
+            --cyborg-dark: #060606;
+            --cyborg-darker: #030303;
+            --cyborg-light: #CCCCCC;
+            --cyborg-glow: 0 0 10px rgba(42, 159, 215, 0.5);
         }
         
         body {
-            background: linear-gradient(135deg, var(--gcsu-light-blue) 0%, #ffffff 50%, var(--gcsu-light-green) 100%);
+            background-image: url('https://imgs.search.brave.com/0WyHWuoP_c5SYbVp-NKdvrk_rLo8b3LmTToPtk-8aiQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTM4/Nzk0NTA0My9waG90/by9jb21wdXRlci10/ZWNobm9sb2d5LWJh/Y2tncm91bmQtZGln/aXRhbC1kYXRhLWZs/b3ctbmV0d29yay1j/b25uZWN0aW9uLXN0/cnVjdHVyZS1iaWct/ZGF0YS5qcGc_cz02/MTJ4NjEyJnc9MCZr/PTIwJmM9VjJjWi1o/aXJheEg3VVZQaVRT/V2dZZnRIangwaVNl/dnoweGZVdUpMSjlw/Yz0');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: var(--cyborg-dark);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .navbar-gcsu {
-            background: linear-gradient(90deg, var(--gcsu-blue) 0%, var(--gcsu-green) 100%);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 1rem 0;
+            background: linear-gradient(90deg, var(--cyborg-darker) 0%, #000000 100%);
+            box-shadow: 0 4px 15px rgba(42, 159, 215, 0.3);
+            border-bottom: 2px solid var(--cyborg-primary);
         }
         
         .navbar-brand {
             font-weight: bold;
             font-size: 1.4rem;
-            color: white !important;
+            color: var(--cyborg-primary) !important;
+            text-shadow: var(--cyborg-glow);
         }
         
         .navbar-brand:hover {
-            color: #f8f9fa !important;
+            color: var(--cyborg-secondary) !important;
             transform: scale(1.05);
             transition: all 0.3s ease;
+            text-shadow: 0 0 15px rgba(119, 179, 0, 0.7);
         }
         
         .navbar-nav .nav-link {
-            color: rgba(255, 255, 255, 0.9) !important;
+            color: var(--cyborg-light) !important;
             font-weight: 500;
             margin: 0 0.5rem;
             padding: 0.5rem 1rem !important;
-            border-radius: 25px;
+            border-radius: 5px;
             transition: all 0.3s ease;
+            border: 1px solid transparent;
         }
         
         .navbar-nav .nav-link:hover {
-            color: white !important;
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
+            color: var(--cyborg-primary) !important;
+            background: rgba(42, 159, 215, 0.1);
+            border: 1px solid var(--cyborg-primary);
+            box-shadow: var(--cyborg-glow);
+        }
+        
+        .navbar-toggler {
+            border-color: var(--cyborg-primary);
+        }
+        
+        .navbar-toggler-icon {
+            background-color: var(--cyborg-primary);
         }
         
         .container {
             margin-top: 2rem;
         }
         
-        .alert {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .alert-danger {
-            background: linear-gradient(45deg, #dc3545, #c82333);
-            color: white;
-        }
-        
-        .alert-success {
-            background: linear-gradient(45deg, var(--gcsu-green), #28a745);
-            color: white;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(45deg, var(--gcsu-blue), var(--gcsu-green));
-            border: none;
-            border-radius: 25px;
-            padding: 0.5rem 1.5rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 51, 153, 0.3);
-        }
-        
         .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            background: var(--cyborg-darker);
+            border: 1px solid var(--cyborg-primary);
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+            transition: all 0.3s ease;
         }
         
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(42, 159, 215, 0.2);
+            border-color: var(--cyborg-secondary);
         }
         
-        h1, h2, h3 {
-            color: var(--gcsu-blue);
+        .card-body {
+            color: var(--cyborg-light);
+        }
+        
+        .card-title {
+            color: var(--cyborg-primary);
+            text-shadow: var(--cyborg-glow);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--cyborg-primary);
+            text-shadow: var(--cyborg-glow);
+        }
+        
+        .text-muted {
+            color: #888888 !important;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--cyborg-primary), var(--cyborg-secondary));
+            border: 1px solid var(--cyborg-primary);
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: var(--cyborg-glow);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(45deg, var(--cyborg-secondary), var(--cyborg-primary));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(42, 159, 215, 0.4);
+            border-color: var(--cyborg-secondary);
+        }
+        
+        .btn-outline-primary {
+            border-color: var(--cyborg-primary);
+            color: var(--cyborg-primary);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--cyborg-primary);
+            border-color: var(--cyborg-primary);
+            box-shadow: var(--cyborg-glow);
+        }
+        
+        .btn-outline-secondary {
+            border-color: var(--cyborg-secondary);
+            color: var(--cyborg-secondary);
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: var(--cyborg-secondary);
+            border-color: var(--cyborg-secondary);
+        }
+        
+        .alert {
+            border: 1px solid;
+            border-radius: 8px;
+            background: var(--cyborg-darker);
+        }
+        
+        .alert-info {
+            border-color: var(--cyborg-primary);
+            color: var(--cyborg-primary);
+        }
+        
+        .alert-success {
+            border-color: var(--cyborg-secondary);
+            color: var(--cyborg-secondary);
+        }
+        
+        .alert-danger {
+            border-color: var(--cyborg-danger);
+            color: var(--cyborg-danger);
         }
         
         .table {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: var(--cyborg-darker);
+            color: var(--cyborg-light);
         }
         
         .table thead th {
-            background: linear-gradient(90deg, var(--gcsu-blue), var(--gcsu-green));
-            color: white;
+            background: var(--cyborg-primary);
+            color: var(--cyborg-dark);
             border: none;
             font-weight: 600;
         }
+        
+        .table td {
+            border-color: rgba(42, 159, 215, 0.3);
+        }
+        
+        .breadcrumb {
+            background: var(--cyborg-darker);
+            border: 1px solid rgba(42, 159, 215, 0.3);
+        }
+        
+        .breadcrumb-item a {
+            color: var(--cyborg-primary);
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--cyborg-light);
+        }
+        
+        .form-control {
+            background: var(--cyborg-darker);
+            border: 1px solid rgba(42, 159, 215, 0.3);
+            color: var(--cyborg-light);
+        }
+        
+        .form-control:focus {
+            background: var(--cyborg-darker);
+            border-color: var(--cyborg-primary);
+            box-shadow: var(--cyborg-glow);
+            color: var(--cyborg-light);
+        }
+        
+        .form-label {
+            color: var(--cyborg-primary);
+        }
+        
+        .dropdown-menu {
+            background: var(--cyborg-darker);
+            border: 1px solid var(--cyborg-primary);
+        }
+        
+        .dropdown-item {
+            color: var(--cyborg-light);
+        }
+        
+        .dropdown-item:hover {
+            background: rgba(42, 159, 215, 0.1);
+            color: var(--cyborg-primary);
+        }
+        
+        a {
+            color: var(--cyborg-primary);
+        }
+        
+        a:hover {
+            color: var(--cyborg-secondary);
+        }
+        
+        .badge-primary {
+            background-color: var(--cyborg-primary);
+            color: var(--cyborg-dark);
+        }
+        
+        .badge-success {
+            background-color: var(--cyborg-secondary);
+            color: var(--cyborg-dark);
+        }
+        
+        .badge-info {
+            background-color: var(--cyborg-primary);
+            color: var(--cyborg-dark);
+        }
+        
+        .badge-danger {
+            background-color: var(--cyborg-danger);
+        }
+        
+        .text-success {
+            color: var(--cyborg-secondary) !important;
+        }
+        
+        .text-primary {
+            color: var(--cyborg-primary) !important;
+        }
+        
+        .list-group-item {
+            background: var(--cyborg-darker);
+            border-color: rgba(42, 159, 215, 0.3);
+            color: var(--cyborg-light);
+        }
     </style>
+    {% endblock %}
+    
+    {% block page_styles %}{% endblock %}
 </head>
-<body>
+<body{% block body_attributes %}{% endblock %}>
+    {% block header %}
     <nav class="navbar navbar-expand-lg navbar-gcsu">
+        {% block navbar_brand %}
         <a class="navbar-brand" href="{{ url_for('index') }}">
-            <i class="fas fa-home me-2"></i>GCSU MIS Starter Kit
+            <i class="fas fa-microchip me-2"></i>{% block site_name %}TechEdu Hub{% endblock %}
         </a>
-        <div class="collapse navbar-collapse">
+        {% endblock %}
+        
+        {% block navbar_toggle %}
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        {% endblock %}
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            {% block navbar_nav %}
             <ul class="navbar-nav mr-auto">
+                {% block nav_items %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('about') }}">
-                        <i class="fas fa-info-circle me-1"></i>About
+                    <a class="nav-link" href="{{ url_for('tutorials') }}">
+                        <i class="fas fa-graduation-cap me-1"></i>Tutorials
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('examples.show_examples') }}">
-                        <i class="fas fa-database me-1"></i>Examples
+                    <a class="nav-link" href="{{ url_for('projects') }}">
+                        <i class="fas fa-project-diagram me-1"></i>Projects
                     </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('news') }}">
+                        <i class="fas fa-newspaper me-1"></i>Tech News
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('resources') }}">
+                        <i class="fas fa-download me-1"></i>Resources
+                    </a>
+                </li>
+                {% endblock %}
+            </ul>
+            {% block navbar_right %}
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <button class="btn btn-outline-primary" id="searchToggleBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </li>
             </ul>
+            {% endblock %}
+            {% endblock %}
         </div>
     </nav>
+    {% endblock %}
 
-    <div class="container">
+    {% block main %}
+    <div class="{% block container_class %}container{% endblock %}">
+        {% block flash_messages %}
         <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -150,15 +355,373 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
+        {% endblock %}
+        
+        {% block breadcrumb %}{% endblock %}
+        
+        {% block page_header %}{% endblock %}
         
         {% block content %}{% endblock %}
+        
+        {% block sidebar %}{% endblock %}
+    </div>
+    {% endblock %}
+
+    {% block footer %}{% endblock %}
+
+    <!-- Global Search Modal -->
+    <div class="modal fade" id="globalSearchModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-search me-2"></i>Search TechEdu Hub
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="search-input-section mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-lg" id="globalSearchInput" 
+                                   placeholder="Search tutorials, projects, news, and resources...">
+                            <button class="btn btn-primary" type="button" id="globalSearchBtn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="search-filters mb-3">
+                        <small class="text-muted">Filter by:</small>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <input type="radio" class="btn-check" name="searchFilter" id="filterAll" value="all" checked>
+                            <label class="btn btn-outline-secondary" for="filterAll">All</label>
+                            
+                            <input type="radio" class="btn-check" name="searchFilter" id="filterTutorials" value="tutorials">
+                            <label class="btn btn-outline-secondary" for="filterTutorials">Tutorials</label>
+                            
+                            <input type="radio" class="btn-check" name="searchFilter" id="filterProjects" value="projects">
+                            <label class="btn btn-outline-secondary" for="filterProjects">Projects</label>
+                            
+                            <input type="radio" class="btn-check" name="searchFilter" id="filterNews" value="news">
+                            <label class="btn btn-outline-secondary" for="filterNews">News</label>
+                            
+                            <input type="radio" class="btn-check" name="searchFilter" id="filterResources" value="resources">
+                            <label class="btn btn-outline-secondary" for="filterResources">Resources</label>
+                        </div>
+                    </div>
+                    
+                    <div id="searchResults">
+                        <div class="search-suggestions">
+                            <h6>Popular Searches:</h6>
+                            <div class="suggestion-tags">
+                                <span class="badge badge-pill badge-light suggestion-tag">Python basics</span>
+                                <span class="badge badge-pill badge-light suggestion-tag">Web development</span>
+                                <span class="badge badge-pill badge-light suggestion-tag">Machine learning</span>
+                                <span class="badge badge-pill badge-light suggestion-tag">JavaScript</span>
+                                <span class="badge badge-pill badge-light suggestion-tag">Data visualization</span>
+                                <span class="badge badge-pill badge-light suggestion-tag">API development</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <small class="text-muted">
+                        <i class="fas fa-lightbulb me-1"></i>
+                        Pro tip: Use quotes for exact phrases, e.g., "machine learning"
+                    </small>
+                </div>
+            </div>
+        </div>
     </div>
 
+    {% block javascript %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Global Search Functionality -->
+    <script>
+        // Global search data (in real app, this would come from an API)
+        const searchData = {
+            tutorials: [
+                {id: 1, title: 'Python Basics', description: 'Learn Python fundamentals', type: 'tutorial', url: '/tutorials', keywords: ['python', 'programming', 'basics', 'variables', 'functions']},
+                {id: 2, title: 'HTML & CSS', description: 'Build your first webpage', type: 'tutorial', url: '/tutorials', keywords: ['html', 'css', 'web', 'design', 'responsive']},
+                {id: 3, title: 'JavaScript Essentials', description: 'Interactive web development', type: 'tutorial', url: '/tutorials', keywords: ['javascript', 'js', 'dom', 'events', 'interactive']},
+                {id: 4, title: 'Git & Version Control', description: 'Master code versioning', type: 'tutorial', url: '/tutorials', keywords: ['git', 'version control', 'github', 'collaboration']}
+            ],
+            projects: [
+                {id: 1, title: 'Weather App', description: 'Build a weather forecast application using APIs', type: 'project', url: '/projects', keywords: ['python', 'api', 'weather', 'requests', 'json']},
+                {id: 2, title: 'Task Manager', description: 'Create a to-do list with local storage', type: 'project', url: '/projects', keywords: ['html', 'css', 'javascript', 'local storage', 'todo']},
+                {id: 3, title: 'Data Visualizer', description: 'Analyze and visualize CSV data', type: 'project', url: '/projects', keywords: ['python', 'matplotlib', 'data', 'visualization', 'pandas']},
+                {id: 4, title: 'Simple Chatbot', description: 'Build an AI-powered conversational bot', type: 'project', url: '/projects', keywords: ['python', 'nlp', 'chatbot', 'ai', 'machine learning']}
+            ],
+            news: [
+                {id: 1, title: 'AI Breakthrough in 2024', description: 'Latest developments in artificial intelligence', type: 'news', url: '/news', keywords: ['ai', 'artificial intelligence', 'machine learning', 'breakthrough']},
+                {id: 2, title: 'Robotics Revolution', description: 'How robots are transforming industries', type: 'news', url: '/news', keywords: ['robotics', 'automation', 'industry', 'technology']},
+                {id: 3, title: 'Quantum Computing Update', description: 'Recent advances in quantum computing', type: 'news', url: '/news', keywords: ['quantum', 'computing', 'quantum computing', 'technology']},
+                {id: 4, title: 'Cybersecurity Trends', description: 'Emerging threats and protection strategies', type: 'news', url: '/news', keywords: ['cybersecurity', 'security', 'threats', 'protection']}
+            ],
+            resources: [
+                {id: 1, title: 'Python Cheat Sheet', description: 'Quick reference for Python syntax', type: 'resource', url: '/resources', keywords: ['python', 'cheat sheet', 'syntax', 'reference']},
+                {id: 2, title: 'HTML/CSS Quick Guide', description: 'Essential HTML tags and CSS properties', type: 'resource', url: '/resources', keywords: ['html', 'css', 'guide', 'tags', 'properties']},
+                {id: 3, title: 'JavaScript Reference', description: 'Common JavaScript functions and methods', type: 'resource', url: '/resources', keywords: ['javascript', 'reference', 'functions', 'methods']}
+            ]
+        };
+
+        class GlobalSearch {
+            constructor() {
+                this.searchModal = null;
+                this.searchInput = null;
+                this.searchResults = null;
+                this.currentFilter = 'all';
+                this.recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+                this.init();
+            }
+
+            init() {
+                // Initialize modal and elements
+                const modalElement = document.getElementById('globalSearchModal');
+                if (modalElement) {
+                    this.searchModal = new bootstrap.Modal(modalElement);
+                    this.searchInput = document.getElementById('globalSearchInput');
+                    this.searchResults = document.getElementById('searchResults');
+                    
+                    this.bindEvents();
+                }
+            }
+
+            bindEvents() {
+                // Search toggle button
+                const toggleBtn = document.getElementById('searchToggleBtn');
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', () => this.showSearchModal());
+                }
+
+                // Search input
+                if (this.searchInput) {
+                    this.searchInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
+                    this.searchInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') this.performSearch(e.target.value);
+                    });
+                }
+
+                // Search button
+                const searchBtn = document.getElementById('globalSearchBtn');
+                if (searchBtn) {
+                    searchBtn.addEventListener('click', () => this.performSearch(this.searchInput.value));
+                }
+
+                // Filter buttons
+                document.querySelectorAll('input[name="searchFilter"]').forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        this.currentFilter = e.target.value;
+                        this.handleSearch(this.searchInput.value);
+                    });
+                });
+
+                // Suggestion tags
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('suggestion-tag')) {
+                        this.performSearch(e.target.textContent);
+                    }
+                });
+
+                // Keyboard shortcut (Ctrl/Cmd + K)
+                document.addEventListener('keydown', (e) => {
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                        e.preventDefault();
+                        this.showSearchModal();
+                    }
+                });
+            }
+
+            showSearchModal() {
+                this.searchModal.show();
+                setTimeout(() => {
+                    this.searchInput.focus();
+                }, 300);
+            }
+
+            handleSearch(query) {
+                if (!query || query.length < 2) {
+                    this.showSuggestions();
+                    return;
+                }
+
+                const results = this.performSearchQuery(query);
+                this.displayResults(results, query);
+            }
+
+            performSearch(query) {
+                if (!query.trim()) return;
+                
+                this.addToRecentSearches(query);
+                const results = this.performSearchQuery(query);
+                this.displayResults(results, query);
+            }
+
+            performSearchQuery(query) {
+                const searchTerm = query.toLowerCase();
+                let results = [];
+
+                // Search in all categories or filtered category
+                const categoriesToSearch = this.currentFilter === 'all' 
+                    ? Object.keys(searchData) 
+                    : [this.currentFilter];
+
+                categoriesToSearch.forEach(category => {
+                    if (searchData[category]) {
+                        searchData[category].forEach(item => {
+                            const relevanceScore = this.calculateRelevance(item, searchTerm);
+                            if (relevanceScore > 0) {
+                                results.push({ ...item, relevance: relevanceScore });
+                            }
+                        });
+                    }
+                });
+
+                // Sort by relevance
+                return results.sort((a, b) => b.relevance - a.relevance);
+            }
+
+            calculateRelevance(item, searchTerm) {
+                let score = 0;
+                const term = searchTerm.toLowerCase();
+
+                // Exact title match gets highest score
+                if (item.title.toLowerCase().includes(term)) {
+                    score += 10;
+                }
+
+                // Description match
+                if (item.description.toLowerCase().includes(term)) {
+                    score += 5;
+                }
+
+                // Keywords match
+                item.keywords?.forEach(keyword => {
+                    if (keyword.toLowerCase().includes(term)) {
+                        score += 3;
+                    }
+                });
+
+                return score;
+            }
+
+            displayResults(results, query) {
+                if (results.length === 0) {
+                    this.searchResults.innerHTML = `
+                        <div class="no-results text-center py-4">
+                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                            <h6>No results found for "${query}"</h6>
+                            <p class="text-muted">Try different keywords or check your spelling.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = `<div class="search-results-list">`;
+                html += `<h6>Found ${results.length} result${results.length !== 1 ? 's' : ''} for "${query}"</h6>`;
+
+                results.forEach(result => {
+                    const icon = this.getTypeIcon(result.type);
+                    html += `
+                        <div class="search-result-item" data-url="${result.url}">
+                            <div class="d-flex">
+                                <div class="result-icon me-3">
+                                    <i class="${icon}"></i>
+                                </div>
+                                <div class="result-content flex-grow-1">
+                                    <h6 class="result-title">${this.highlightTerm(result.title, query)}</h6>
+                                    <p class="result-description text-muted">${this.highlightTerm(result.description, query)}</p>
+                                    <small class="result-type badge badge-${this.getTypeBadgeColor(result.type)}">${result.type}</small>
+                                </div>
+                                <div class="result-actions">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="window.open('${result.url}', '_blank')">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                this.searchResults.innerHTML = html;
+            }
+
+            showSuggestions() {
+                let html = '<div class="search-suggestions">';
+                
+                if (this.recentSearches.length > 0) {
+                    html += '<h6>Recent Searches:</h6>';
+                    html += '<div class="suggestion-tags">';
+                    this.recentSearches.slice(0, 5).forEach(search => {
+                        html += `<span class="badge badge-pill badge-secondary suggestion-tag">${search}</span>`;
+                    });
+                    html += '</div><hr>';
+                }
+
+                html += `
+                    <h6>Popular Searches:</h6>
+                    <div class="suggestion-tags">
+                        <span class="badge badge-pill badge-light suggestion-tag">Python basics</span>
+                        <span class="badge badge-pill badge-light suggestion-tag">Web development</span>
+                        <span class="badge badge-pill badge-light suggestion-tag">Machine learning</span>
+                        <span class="badge badge-pill badge-light suggestion-tag">JavaScript</span>
+                        <span class="badge badge-pill badge-light suggestion-tag">Data visualization</span>
+                        <span class="badge badge-pill badge-light suggestion-tag">API development</span>
+                    </div>
+                `;
+                html += '</div>';
+                
+                this.searchResults.innerHTML = html;
+            }
+
+            highlightTerm(text, term) {
+                const regex = new RegExp(`(${term})`, 'gi');
+                return text.replace(regex, '<mark>$1</mark>');
+            }
+
+            getTypeIcon(type) {
+                const icons = {
+                    tutorial: 'fas fa-graduation-cap text-primary',
+                    project: 'fas fa-project-diagram text-success',
+                    news: 'fas fa-newspaper text-info',
+                    resource: 'fas fa-download text-warning'
+                };
+                return icons[type] || 'fas fa-file';
+            }
+
+            getTypeBadgeColor(type) {
+                const colors = {
+                    tutorial: 'primary',
+                    project: 'success', 
+                    news: 'info',
+                    resource: 'warning'
+                };
+                return colors[type] || 'secondary';
+            }
+
+            addToRecentSearches(query) {
+                this.recentSearches = this.recentSearches.filter(search => search !== query);
+                this.recentSearches.unshift(query);
+                this.recentSearches = this.recentSearches.slice(0, 10);
+                localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches));
+            }
+        }
+
+        // Initialize global search when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            new GlobalSearch();
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+    {% endblock %}
 
     {% block scripts %}{% endblock %}
+    
+    {% block page_scripts %}{% endblock %}
 </body>
 </html>
 

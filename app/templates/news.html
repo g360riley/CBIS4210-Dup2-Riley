@@ -1,0 +1,784 @@
+{% extends "base.html" %}
+
+{% block title %}Tech News & Trends - TechEdu Hub{% endblock %}
+
+{% block meta_description %}Stay updated with the latest technology trends, AI breakthroughs, robotics developments, and emerging tech innovations. Your source for tech news.{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Tech News & Trends</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block page_header %}
+<div class="text-center mb-5">
+    <h1 class="display-4">
+        <i class="fas fa-newspaper me-3"></i>Tech News & Trends
+    </h1>
+    <p class="lead">Stay ahead of the curve with the latest in AI, robotics, cybersecurity, and emerging technologies</p>
+    <div class="news-update-indicator">
+        <span class="badge badge-success pulse">
+            <i class="fas fa-sync-alt me-1"></i>Updated Daily
+        </span>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Featured Article -->
+        <div class="card featured-article mb-4">
+            <div class="card-header bg-transparent">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star me-2"></i>Featured Story
+                    </h5>
+                    <span class="badge badge-primary">Breaking</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3 class="card-title">Revolutionary AI Model Achieves Human-Level Reasoning</h3>
+                        <p class="card-text">Scientists at leading AI research labs have developed a groundbreaking artificial intelligence system that demonstrates human-level reasoning capabilities across multiple domains, marking a significant milestone in the field of artificial general intelligence.</p>
+                        <div class="article-meta mb-3">
+                            <span class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>January 15, 2024
+                                <i class="fas fa-user ms-3 me-1"></i>Dr. Sarah Chen
+                                <i class="fas fa-tag ms-3 me-1"></i>Artificial Intelligence
+                            </span>
+                        </div>
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-arrow-right me-2"></i>Read Full Article
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="featured-image">
+                            <i class="fas fa-robot fa-5x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- News Articles -->
+        <div class="news-articles">
+            {% for article in articles %}
+            <div class="card news-article mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="category-badge">
+                            {% set category_colors = {
+                                'AI': 'primary',
+                                'Robotics': 'warning',
+                                'Quantum': 'info',
+                                'Security': 'danger'
+                            } %}
+                            <span class="badge badge-{{ category_colors.get(article.category, 'secondary') }}">
+                                {{ article.category }}
+                            </span>
+                        </div>
+                        <small class="text-muted">{{ article.date }}</small>
+                    </div>
+                    
+                    <h4 class="card-title">
+                        <a href="#" class="article-link">{{ article.title }}</a>
+                    </h4>
+                    <p class="card-text">{{ article.summary }}</p>
+                    
+                    <div class="article-actions mt-3">
+                        <a href="#" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye me-1"></i>Read More
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-share me-1"></i>Share
+                        </a>
+                        <a href="#" class="btn btn-outline-info btn-sm">
+                            <i class="fas fa-bookmark me-1"></i>Save
+                        </a>
+                    </div>
+                    
+                    <div class="article-engagement mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-eye me-1"></i>{{ article.views if article.views else ((article.id * 1337) + 892) }} views
+                            <i class="fas fa-comment ms-3 me-1"></i>{{ article.comments if article.comments else ((article.id * 12) + 8) }} comments
+                            {% if article.source %}
+                                <i class="fas fa-external-link-alt ms-3 me-1"></i>{{ article.source }}
+                            {% endif %}
+                        </small>
+                    </div>
+                    
+                    {% if article.tags %}
+                    <div class="article-tags mt-2">
+                        {% for tag in article.tags %}
+                            <span class="badge badge-outline me-1">#{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Load More Button -->
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-primary btn-lg" id="loadMoreBtn">
+                <i class="fas fa-plus me-2"></i>Load More Articles
+            </button>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <div class="sidebar-content">
+            <!-- Trending Topics -->
+            <div class="card trending-topics mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-fire me-2"></i>Trending Topics
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="trending-list">
+                        {% for topic in trending_topics[:6] %}
+                        <div class="trending-item">
+                            <div class="trend-rank" style="background-color: {{ topic.color }}20; color: {{ topic.color }};">
+                                {{ loop.index }}
+                            </div>
+                            <div class="trend-content">
+                                <strong>{{ topic.name }}</strong>
+                                <small class="d-block text-muted">
+                                    {{ topic.articles }} articles 
+                                    <span class="trend-growth" style="color: {{ topic.color }};">{{ topic.growth }}</span>
+                                </small>
+                            </div>
+                            <div class="trend-indicator">
+                                <div class="trend-bar">
+                                    <div class="trend-progress" style="width: {{ (topic.articles / 1500 * 100) | round }}%; background-color: {{ topic.color }};"></div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <button class="btn btn-outline-primary btn-sm" onclick="refreshTrending()">
+                            <i class="fas fa-sync-alt me-1"></i>Refresh Trends
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tech Calendar -->
+            <div class="card tech-calendar mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-calendar-alt me-2"></i>Upcoming Events
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="event-list">
+                        <div class="event-item">
+                            <div class="event-date">
+                                <div class="date-day">25</div>
+                                <div class="date-month">Jan</div>
+                            </div>
+                            <div class="event-content">
+                                <strong>AI Conference 2024</strong>
+                                <small class="d-block text-muted">Virtual Event</small>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">
+                                <div class="date-day">02</div>
+                                <div class="date-month">Feb</div>
+                            </div>
+                            <div class="event-content">
+                                <strong>Robotics Summit</strong>
+                                <small class="d-block text-muted">San Francisco</small>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">
+                                <div class="date-day">15</div>
+                                <div class="date-month">Feb</div>
+                            </div>
+                            <div class="event-content">
+                                <strong>Quantum Tech Symposium</strong>
+                                <small class="d-block text-muted">Boston</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Newsletter Signup -->
+            <div class="card newsletter-signup mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-envelope me-2"></i>Stay Updated
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Get the latest tech news and trends delivered to your inbox weekly.</p>
+                    <form class="newsletter-form">
+                        <div class="mb-3">
+                            <input type="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-paper-plane me-2"></i>Subscribe
+                        </button>
+                    </form>
+                    <small class="text-muted">
+                        <i class="fas fa-shield-alt me-1"></i>No spam, unsubscribe anytime
+                    </small>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="card quick-links">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-link me-2"></i>Quick Links
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a href="{{ url_for('tutorials') }}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-graduation-cap me-2"></i>Learn New Skills
+                        </a>
+                        <a href="{{ url_for('projects') }}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-project-diagram me-2"></i>Build Projects
+                        </a>
+                        <a href="{{ url_for('resources') }}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-download me-2"></i>Get Resources
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="fab fa-discord me-2"></i>Join Community
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_styles %}
+<style>
+    .pulse {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    
+    .featured-article {
+        background: linear-gradient(135deg, rgba(42, 159, 215, 0.1), rgba(119, 179, 0, 0.05));
+        border: 2px solid var(--cyborg-primary);
+    }
+    
+    .featured-image {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(42, 159, 215, 0.1);
+        border-radius: 10px;
+        border: 1px solid rgba(42, 159, 215, 0.3);
+    }
+    
+    .news-article {
+        background: var(--cyborg-darker);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .news-article:hover {
+        border-color: var(--cyborg-primary);
+        box-shadow: 0 5px 15px rgba(42, 159, 215, 0.2);
+        transform: translateY(-2px);
+    }
+    
+    .article-link {
+        color: var(--cyborg-primary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .article-link:hover {
+        color: var(--cyborg-secondary);
+        text-decoration: underline;
+    }
+    
+    .sidebar-content .card {
+        background: var(--cyborg-darker);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+    }
+    
+    .trending-item,
+    .event-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(42, 159, 215, 0.1);
+    }
+    
+    .trending-item:last-child,
+    .event-item:last-child {
+        border-bottom: none;
+    }
+    
+    .trend-rank {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--cyborg-primary);
+        color: var(--cyborg-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 15px;
+        font-size: 0.9rem;
+    }
+    
+    .trend-content,
+    .event-content {
+        flex-grow: 1;
+    }
+    
+    .event-date {
+        text-align: center;
+        margin-right: 15px;
+        padding: 5px 10px;
+        background: rgba(42, 159, 215, 0.1);
+        border-radius: 8px;
+        border: 1px solid rgba(42, 159, 215, 0.3);
+        min-width: 50px;
+    }
+    
+    .date-day {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--cyborg-primary);
+    }
+    
+    .date-month {
+        font-size: 0.8rem;
+        color: var(--cyborg-light);
+    }
+    
+    .newsletter-form {
+        margin: 15px 0;
+    }
+    
+    .newsletter-form .form-control {
+        background: var(--cyborg-dark);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+        color: var(--cyborg-light);
+    }
+    
+    .newsletter-form .form-control:focus {
+        background: var(--cyborg-dark);
+        border-color: var(--cyborg-primary);
+        box-shadow: 0 0 0 0.2rem rgba(42, 159, 215, 0.25);
+        color: var(--cyborg-light);
+    }
+    
+    .list-group-item {
+        background: transparent;
+        border-color: rgba(42, 159, 215, 0.2);
+        color: var(--cyborg-light);
+        transition: all 0.3s ease;
+    }
+    
+    .list-group-item:hover {
+        background: rgba(42, 159, 215, 0.1);
+        border-color: var(--cyborg-primary);
+        color: var(--cyborg-primary);
+    }
+    
+    .article-actions .btn {
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .card-header {
+        background: rgba(42, 159, 215, 0.1);
+        border-bottom: 1px solid rgba(42, 159, 215, 0.3);
+    }
+    
+    #loadMoreBtn {
+        min-width: 200px;
+        transition: all 0.3s ease;
+    }
+    
+    #loadMoreBtn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(42, 159, 215, 0.3);
+    }
+    
+    @media (max-width: 768px) {
+        .featured-article .row {
+            flex-direction: column-reverse;
+        }
+        
+        .article-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .article-actions .btn {
+            flex: 1;
+            margin: 0;
+        }
+    }
+    
+    /* Enhanced Trending Topics Styles */
+    .trend-indicator {
+        min-width: 60px;
+        margin-left: 10px;
+    }
+    
+    .trend-bar {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    
+    .trend-progress {
+        height: 100%;
+        transition: width 0.3s ease;
+        border-radius: 2px;
+    }
+    
+    .trend-growth {
+        font-weight: 600;
+        font-size: 0.8em;
+    }
+    
+    .article-tags {
+        margin-top: 8px;
+    }
+    
+    .badge-outline {
+        background: transparent;
+        border: 1px solid rgba(42, 159, 215, 0.3);
+        color: var(--cyborg-primary);
+        font-size: 0.7em;
+        padding: 3px 8px;
+    }
+    
+    .badge-outline:hover {
+        background: rgba(42, 159, 215, 0.1);
+        border-color: var(--cyborg-primary);
+    }
+    
+    /* Real-time update animations */
+    .news-update-pulse {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(42, 159, 215, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(42, 159, 215, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(42, 159, 215, 0);
+        }
+    }
+    
+    .article-card.new-article {
+        animation: slideInUp 0.5s ease-out;
+        border-left: 4px solid var(--cyborg-primary);
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load more functionality
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        let articlesLoaded = 0;
+        
+        loadMoreBtn.addEventListener('click', function() {
+            // Simulate loading more articles
+            const newsContainer = document.querySelector('.news-articles');
+            const sampleArticles = [
+                'Edge Computing Revolution: Bringing AI to the Device Level',
+                'Blockchain Beyond Cryptocurrency: Real-World Applications',
+                '5G Networks: Transforming IoT and Smart Cities',
+                'Metaverse Development: Building Virtual Worlds for Education'
+            ];
+            
+            articlesLoaded++;
+            const articleTitle = sampleArticles[articlesLoaded % sampleArticles.length];
+            
+            const newArticle = document.createElement('div');
+            newArticle.className = 'card news-article mb-4';
+            newArticle.innerHTML = `
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="badge badge-info">Tech</span>
+                        <small class="text-muted">Just now</small>
+                    </div>
+                    <h4 class="card-title">
+                        <a href="#" class="article-link">${articleTitle}</a>
+                    </h4>
+                    <p class="card-text">Exploring the latest developments and their impact on the technology landscape.</p>
+                    <div class="article-actions mt-3">
+                        <a href="#" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-eye me-1"></i>Read More
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-share me-1"></i>Share
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            // Add animation
+            newArticle.style.opacity = '0';
+            newArticle.style.transform = 'translateY(20px)';
+            newsContainer.appendChild(newArticle);
+            
+            setTimeout(() => {
+                newArticle.style.transition = 'all 0.5s ease';
+                newArticle.style.opacity = '1';
+                newArticle.style.transform = 'translateY(0)';
+            }, 100);
+            
+            if (articlesLoaded >= 3) {
+                loadMoreBtn.textContent = 'All articles loaded';
+                loadMoreBtn.disabled = true;
+                loadMoreBtn.classList.add('disabled');
+            }
+        });
+        
+        // Newsletter form
+        const newsletterForm = document.querySelector('.newsletter-form');
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            
+            // Simulate subscription
+            const button = this.querySelector('button[type="submit"]');
+            const originalText = button.innerHTML;
+            
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Subscribing...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-check me-2"></i>Subscribed!';
+                button.classList.remove('btn-success');
+                button.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    this.reset();
+                }, 2000);
+            }, 1500);
+        });
+        
+        // Add reading time estimation
+        document.querySelectorAll('.news-article').forEach((article, index) => {
+            const content = article.querySelector('.card-text').textContent;
+            const readingTime = Math.max(1, Math.ceil(content.split(' ').length / 200));
+            
+            const engagement = article.querySelector('.article-engagement');
+            if (engagement) {
+                engagement.innerHTML += `<i class="fas fa-clock ms-3 me-1"></i>${readingTime} min read`;
+            }
+        });
+        
+        // Real-time news updates
+        initializeRealTimeUpdates();
+        
+        // Auto-refresh trending topics every 5 minutes
+        setInterval(refreshTrending, 300000);
+    });
+    
+    // Real-time news functionality
+    function initializeRealTimeUpdates() {
+        // Check for new articles every 30 seconds
+        setInterval(async () => {
+            try {
+                const response = await fetch('/api/news');
+                const articles = await response.json();
+                
+                // Check if there are newer articles (in a real app, you'd compare timestamps)
+                if (Math.random() > 0.7) { // Simulate 30% chance of new content
+                    showNewsUpdateNotification();
+                }
+                
+                // Update article view counts (simulate real-time engagement)
+                updateEngagementCounts();
+                
+            } catch (error) {
+                console.error('Failed to fetch real-time updates:', error);
+            }
+        }, 30000);
+    }
+    
+    function showNewsUpdateNotification() {
+        const notification = document.createElement('div');
+        notification.className = 'alert alert-info news-update-notification';
+        notification.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="fas fa-newspaper me-2"></i>
+                    <strong>New articles available!</strong> Click to refresh and see the latest tech news.
+                </div>
+                <button class="btn btn-sm btn-primary" onclick="refreshNewsPage()">
+                    <i class="fas fa-sync-alt me-1"></i>Refresh
+                </button>
+            </div>
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            z-index: 1050;
+            min-width: 350px;
+            max-width: 500px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Auto-dismiss after 8 seconds
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => notification.remove(), 300);
+        }, 8000);
+    }
+    
+    function refreshNewsPage() {
+        // Add loading state
+        const refreshButton = event.target;
+        const originalContent = refreshButton.innerHTML;
+        refreshButton.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Loading...';
+        refreshButton.disabled = true;
+        
+        // Simulate loading new content
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
+    }
+    
+    function refreshTrending() {
+        const button = event.target;
+        const originalContent = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Updating...';
+        button.disabled = true;
+        
+        // Simulate API call to refresh trending topics
+        setTimeout(() => {
+            // In a real app, this would fetch new data and update the DOM
+            animateTrendingUpdate();
+            button.innerHTML = originalContent;
+            button.disabled = false;
+            
+            showNotification('Trending topics updated with latest data!', 'success');
+        }, 1500);
+    }
+    
+    function animateTrendingUpdate() {
+        const trendingItems = document.querySelectorAll('.trending-item');
+        trendingItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.animation = 'pulse 0.5s ease-out';
+                setTimeout(() => {
+                    item.style.animation = '';
+                }, 500);
+            }, index * 100);
+        });
+    }
+    
+    function updateEngagementCounts() {
+        // Simulate real-time view count updates
+        const engagementElements = document.querySelectorAll('.article-engagement small');
+        engagementElements.forEach(element => {
+            const viewsMatch = element.textContent.match(/(\d+) views/);
+            if (viewsMatch) {
+                const currentViews = parseInt(viewsMatch[1]);
+                const newViews = currentViews + Math.floor(Math.random() * 5) + 1;
+                element.innerHTML = element.innerHTML.replace(/\d+ views/, `${newViews} views`);
+            }
+        });
+    }
+    
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check' : 'info'}-circle me-2"></i>
+            ${message}
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            min-width: 300px;
+            max-width: 400px;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
+    }
+</script>
+{% endblock %}

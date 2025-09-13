@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-lg p-4 mb-5">
+            <h1 class="display-4 text-center mb-4">
+                <i class="fas fa-envelope me-3"></i>Contact Us
+            </h1>
+            <p class="lead text-center mb-5">Get in touch with our team of experts</p>
+                
+                <div class="row">
+                    <div class="col-lg-8 mb-4">
+                        <div class="card contact-form-card">
+                            <div class="card-body p-4">
+                                <h3 class="card-title mb-4">
+                                    <i class="fas fa-paper-plane me-2"></i>Send us a Message
+                                </h3>
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="firstName" class="form-label">First Name</label>
+                                            <input type="text" class="form-control" id="firstName" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="lastName" class="form-label">Last Name</label>
+                                            <input type="text" class="form-control" id="lastName" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="email" class="form-label">Email Address</label>
+                                            <input type="email" class="form-control" id="email" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="phone" class="form-label">Phone Number</label>
+                                            <input type="tel" class="form-control" id="phone">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="company" class="form-label">Company/Organization</label>
+                                        <input type="text" class="form-control" id="company">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="service" class="form-label">Service of Interest</label>
+                                        <select class="form-control" id="service">
+                                            <option value="">Select a service...</option>
+                                            <option value="web-development">Web Development</option>
+                                            <option value="data-analytics">Data Analytics</option>
+                                            <option value="cybersecurity">Cybersecurity</option>
+                                            <option value="mobile-development">Mobile Development</option>
+                                            <option value="cloud-solutions">Cloud Solutions</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="message" class="form-label">Message</label>
+                                        <textarea class="form-control" id="message" rows="5" placeholder="Tell us about your project or inquiry..." required></textarea>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-paper-plane me-2"></i>Send Message
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 mb-4">
+                        <div class="card contact-info-card h-100">
+                            <div class="card-body p-4">
+                                <h3 class="card-title mb-4">
+                                    <i class="fas fa-info-circle me-2"></i>Contact Information
+                                </h3>
+                                
+                                <div class="contact-item mb-4">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-map-marker-alt fa-lg me-3" style="color: var(--gcsu-blue);"></i>
+                                        <h5 class="mb-0">Address</h5>
+                                    </div>
+                                    <p class="text-muted ms-4">
+                                        231 W. Hancock St.<br>
+                                        Milledgeville, GA 31061<br>
+                                        United States
+                                    </p>
+                                </div>
+                                
+                                <div class="contact-item mb-4">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-phone fa-lg me-3" style="color: var(--gcsu-green);"></i>
+                                        <h5 class="mb-0">Phone</h5>
+                                    </div>
+                                    <p class="text-muted ms-4">
+                                        <a href="tel:+14784452753" class="text-decoration-none">(478) 445-2753</a>
+                                    </p>
+                                </div>
+                                
+                                <div class="contact-item mb-4">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-envelope fa-lg me-3" style="color: #dc3545;"></i>
+                                        <h5 class="mb-0">Email</h5>
+                                    </div>
+                                    <p class="text-muted ms-4">
+                                        <a href="mailto:info@gcsu.edu" class="text-decoration-none">info@gcsu.edu</a>
+                                    </p>
+                                </div>
+                                
+                                <div class="contact-item mb-4">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-clock fa-lg me-3" style="color: #6f42c1;"></i>
+                                        <h5 class="mb-0">Business Hours</h5>
+                                    </div>
+                                    <p class="text-muted ms-4">
+                                        Monday - Friday: 8:00 AM - 5:00 PM<br>
+                                        Saturday: 9:00 AM - 2:00 PM<br>
+                                        Sunday: Closed
+                                    </p>
+                                </div>
+                                
+                                <div class="social-links mt-4">
+                                    <h5 class="mb-3">Follow Us</h5>
+                                    <div class="d-flex gap-3">
+                                        <a href="#" class="btn btn-outline-primary btn-sm">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-outline-info btn-sm">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-outline-primary btn-sm">
+                                            <i class="fab fa-linkedin-in"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-outline-danger btn-sm">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="card map-card">
+                            <div class="card-body p-4">
+                                <h3 class="card-title mb-4">
+                                    <i class="fas fa-map me-2"></i>Find Us
+                                </h3>
+                                <div class="map-placeholder text-center py-5" style="background: linear-gradient(135deg, var(--gcsu-light-blue), var(--gcsu-light-green)); border-radius: 10px;">
+                                    <i class="fas fa-map-marked-alt fa-5x mb-3" style="color: var(--gcsu-blue); opacity: 0.7;"></i>
+                                    <h4>Interactive Map</h4>
+                                    <p class="text-muted">Georgia College & State University Campus</p>
+                                    <a href="https://maps.google.com/?q=Georgia+College+State+University+Milledgeville+GA" target="_blank" class="btn btn-primary">
+                                        <i class="fas fa-external-link-alt me-2"></i>View on Google Maps
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_styles %}
+<style>
+    .contact-form-card,
+    .contact-info-card,
+    .map-card {
+        border: 1px solid var(--cyborg-primary);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+        transition: transform 0.3s ease;
+        background: var(--cyborg-darker);
+    }
+    
+    .contact-form-card:hover,
+    .contact-info-card:hover,
+    .map-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(42, 159, 215, 0.3);
+        border-color: var(--cyborg-secondary);
+    }
+    
+    .contact-item {
+        padding: 1rem;
+        border-radius: 8px;
+        background: rgba(42, 159, 215, 0.1);
+        border: 1px solid rgba(42, 159, 215, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .contact-item:hover {
+        background: rgba(42, 159, 215, 0.2);
+        border-color: var(--cyborg-primary);
+        box-shadow: var(--cyborg-glow);
+    }
+    
+    .contact-item h5 {
+        color: var(--cyborg-primary);
+    }
+    
+    .social-links .btn {
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        border: 1px solid var(--cyborg-primary);
+        color: var(--cyborg-primary);
+        background: transparent;
+    }
+    
+    .social-links .btn:hover {
+        transform: translateY(-3px);
+        background: var(--cyborg-primary);
+        color: var(--cyborg-dark);
+        box-shadow: var(--cyborg-glow);
+    }
+    
+    .map-placeholder {
+        background: linear-gradient(135deg, rgba(42, 159, 215, 0.2), rgba(119, 179, 0, 0.2)) !important;
+        border: 1px solid var(--cyborg-primary);
+    }
+    
+    .map-placeholder .fas {
+        color: var(--cyborg-primary) !important;
+        filter: drop-shadow(0 0 10px var(--cyborg-primary));
+    }
+</style>
+{% endblock %}
